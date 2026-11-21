@@ -2,12 +2,20 @@
 @use './reset';
 @use './fonts';
 @use './desktop';
+@use './slide-02';
+@use './slide-03';
 @use './mobile';
+
+// ========================================
+// ОБЩИЕ СТИЛИ
+// ========================================
 
 body {
   min-width: 320px;
   margin: 0;
-  font-family: 'Montserrat', 'Euclid Circular A', sans-serif;
+
+  font-family: vars.$font-secondary;
+
   background-color: vars.$color-slide-bg;
   color: vars.$color-white;
 }
@@ -19,4 +27,108 @@ img {
 
 button {
   font: inherit;
+}
+
+// ========================================
+// УПРАВЛЕНИЕ ВИДИМОСТЬЮ СЛАЙДОВ
+// ========================================
+
+@media (min-width: 768px) {
+
+  html,
+  body {
+    overflow: hidden;
+  }
+
+  .slide[hidden] {
+    display: none;
+  }
+
+  // Появление следующего слайда снизу.
+
+  .slide.is-entering.is-forward {
+
+    .slide-01__composition,
+    .slide-02__composition,
+    .slide-03__composition {
+      animation: slide-enter-bottom 600ms
+        cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+  }
+
+  // Появление предыдущего слайда сверху.
+
+  .slide.is-entering.is-backward {
+
+    .slide-01__composition,
+    .slide-02__composition,
+    .slide-03__composition {
+      animation: slide-enter-top 600ms
+        cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+  }
+}
+
+// ========================================
+// АНИМАЦИИ ПЕРЕКЛЮЧЕНИЯ СЛАЙДОВ
+// ========================================
+
+@keyframes slide-enter-bottom {
+
+  from {
+    transform: translateY(100vh);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slide-enter-top {
+
+  from {
+    transform: translateY(-100vh);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+// ========================================
+// МОБИЛЬНЫЙ РЕЖИМ
+// ========================================
+
+@media (max-width: 767px) {
+
+  html,
+  body {
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+}
+
+// ========================================
+// УЧЁТ НАСТРОЕК ПОЛЬЗОВАТЕЛЯ
+// ========================================
+
+@media (prefers-reduced-motion: reduce) {
+
+  .slide.is-entering.is-forward,
+  .slide.is-entering.is-backward {
+
+    .slide-01__composition,
+    .slide-02__composition,
+    .slide-03__composition {
+      animation: none;
+    }
+  }
+
+  .slide-01__wheel-button {
+    transition: none;
+  }
 }

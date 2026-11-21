@@ -1,0 +1,404 @@
+@use 'sass:math';
+@use './variables' as vars;
+
+// ========================================
+// ПАРАМЕТРЫ ИСХОДНОГО МАКЕТА
+// ========================================
+
+$composition-width: 1240;
+$composition-height: 800;
+
+// ========================================
+// ФУНКЦИИ АДАПТИВНЫХ РАЗМЕРОВ
+// ========================================
+
+// Размер относительно ширины контейнера.
+
+@function design($value) {
+  @return math.div(
+    $value,
+    $composition-width
+  ) * 100cqw;
+}
+
+// Горизонтальная координата композиции.
+
+@function horizontal($value) {
+  @return math.div(
+    $value,
+    $composition-width
+  ) * 100%;
+}
+
+// Вертикальная координата композиции.
+
+@function vertical($value) {
+  @return math.div(
+    $value,
+    $composition-height
+  ) * 100%;
+}
+
+// ========================================
+// ДЕСКТОПНАЯ ВЁРСТКА ВТОРОГО СЛАЙДА
+// ========================================
+
+@media (min-width: 768px) {
+
+  // ======================================
+  // ОСНОВНАЯ КОМПОЗИЦИЯ
+  // ======================================
+
+  .slide-02__composition {
+    position: absolute;
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    container-type: inline-size;
+    isolation: isolate;
+
+    overflow: hidden;
+
+    border-radius: design(70);
+
+    background-color: vars.$color-card-bg;
+  }
+
+  // ======================================
+  // ФОНОВОЕ СВЕЧЕНИЕ
+  // ======================================
+
+  .slide-02__glow {
+    position: absolute;
+    z-index: 0;
+
+    left: horizontal(65);
+    top: vertical(16);
+
+    width: horizontal(507);
+    height: vertical(505);
+
+    border-radius: 50%;
+
+    background-color: #f5d4ac;
+
+    opacity: 0.6;
+
+    // Приближённое воспроизведение
+    // размытия исходного макета.
+
+    filter: blur(design(167));
+
+    pointer-events: none;
+  }
+
+  // ======================================
+  // ИЗОБРАЖЕНИЕ МОДЕЛИ
+  // ======================================
+
+  .slide-02__model {
+    position: absolute;
+    z-index: 2;
+
+    left: horizontal(128);
+    top: vertical(-38);
+
+    display: block;
+
+    width: horizontal(668.73);
+    height: vertical(904);
+
+    img {
+      display: block;
+
+      width: 100%;
+      height: 100%;
+
+      max-width: none;
+
+      object-fit: contain;
+    }
+  }
+
+  // ======================================
+  // ДЕКОРАТИВНАЯ ЗВЕЗДА
+  // ======================================
+
+  .slide-02__star {
+    position: absolute;
+    z-index: 4;
+
+    left: horizontal(43);
+    top: vertical(35);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: design(180);
+    aspect-ratio: 1;
+
+    // Формируем звезду из пятнадцати лучей,
+    // используя параметры исходного макета.
+
+    $star-points: ();
+
+    @for $index from 0 through 29 {
+      $angle: (
+        -90deg + $index * 12deg
+      );
+
+      $radius: 50%;
+
+      @if $index % 2 == 1 {
+        $radius: 44.1%;
+      }
+
+      $x: 50% + $radius * math.cos($angle);
+      $y: 50% + $radius * math.sin($angle);
+
+      $star-points: append(
+        $star-points,
+        #{$x} #{$y},
+        comma
+      );
+    }
+
+    clip-path: polygon($star-points);
+
+    background-color: #4b4b4b;
+  }
+
+  .slide-02__star-text {
+    display: block;
+
+    color: vars.$color-white;
+
+    font-family: vars.$font-primary;
+    font-size: design(21.86);
+    font-weight: 600;
+    line-height: 1.13;
+    letter-spacing: -0.01em;
+
+    text-align: center;
+
+    transform: rotate(-10deg);
+  }
+
+  // ======================================
+  // ЗАГОЛОВОК
+  // ======================================
+
+  .slide-02__title {
+    position: absolute;
+    z-index: 3;
+
+    // Центр заголовка совпадает с центром
+    // описания и плашки с весом.
+
+    left: horizontal(969);
+    top: vertical(272);
+
+    width: max-content;
+
+    margin: 0;
+
+    color: vars.$color-white;
+
+    font-family: vars.$font-primary;
+    font-size: design(60.45);
+    font-weight: 600;
+    line-height: 1.01;
+    letter-spacing: -0.01em;
+
+    text-align: center;
+
+    transform: translateX(-50%);
+
+    span {
+      display: block;
+    }
+  }
+
+  // ======================================
+  // ТЕКСТ ОПИСАНИЯ
+  // ======================================
+
+  .slide-02__description {
+    position: absolute;
+    z-index: 3;
+
+    left: horizontal(797);
+    top: vertical(428);
+
+    width: horizontal(344);
+
+    margin: 0;
+
+    color: vars.$color-white;
+
+    font-family: vars.$font-secondary;
+    font-size: design(15);
+    font-weight: 500;
+    line-height: 1.675;
+    letter-spacing: 0.02em;
+
+    text-align: center;
+  }
+
+  // ======================================
+  // ПЛАШКА «500 Г»
+  // ======================================
+
+  .slide-02__badge {
+    position: absolute;
+    z-index: 3;
+
+    left: horizontal(906);
+    top: vertical(567);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: design(126);
+    height: design(55);
+
+    box-sizing: border-box;
+
+    border-radius: design(60);
+
+    background-color: vars.$color-white;
+    color: #4b4b4b;
+
+    font-family: vars.$font-primary;
+    font-size: design(28);
+    font-weight: 700;
+    line-height: 1;
+
+    white-space: nowrap;
+  }
+
+  // ======================================
+  // БОКОВОЕ КОЛЕСО НАВИГАЦИИ
+  // ======================================
+
+  .slide-02__wheel {
+
+    // Положение дуги относительно композиции.
+    // 367 - 320 = 47 пикселей.
+
+    .slide-01__wheel-arc {
+      top: design(47);
+    }
+
+    // Активная группа второго слайда.
+    // 673 - 320 = 353 пикселя.
+
+    .slide-01__wheel-active {
+      left: design(-243);
+      top: design(353);
+    }
+
+    // Активная иконка пера.
+
+    .slide-01__wheel-button--active {
+
+      &::before {
+        left: 18%;
+        top: 20%;
+
+        width: 64%;
+        height: 60%;
+
+        background-color: vars.$color-icon-active;
+
+        mask:
+          url('/icons/feather.svg')
+          center / contain no-repeat;
+      }
+    }
+
+    // Подпись активного слайда.
+
+    .slide-01__wheel-label {
+      font-family: vars.$font-primary;
+      font-size: design(26);
+      font-weight: 600;
+      line-height: design(33);
+      letter-spacing: -0.01em;
+    }
+  }
+
+  // ======================================
+  // ВЕРХНЯЯ КНОПКА КОЛЕСА
+  // ======================================
+
+  .slide-02__wheel-button--motor {
+    left: design(-272);
+    top: design(253);
+  }
+
+  // ======================================
+  // НИЖНЯЯ КНОПКА КОЛЕСА
+  // ======================================
+
+  .slide-02__wheel-button--hairdryer {
+    left: design(-272);
+    top: design(472);
+
+    img {
+      width: 75%;
+      height: 58%;
+    }
+  }
+
+  // ======================================
+  // ДОСТУПНЫЕ КНОПКИ НАВИГАЦИИ
+  // ======================================
+
+  .slide-01__wheel-button[data-slide-target] {
+    cursor: pointer;
+
+    transition:
+      background-color 200ms ease,
+      box-shadow 200ms ease;
+
+    &:hover {
+      background-color: #8c837d;
+    }
+  }
+}
+
+// ========================================
+// АДАПТАЦИЯ ДЛЯ ПЛАНШЕТОВ
+// ========================================
+
+@media (min-width: 768px) and (max-width: 1199px) {
+
+  .slide--02 {
+    .slide__content {
+      justify-content: flex-end;
+
+      box-sizing: border-box;
+
+      padding-right: 3%;
+    }
+  }
+}
+
+// ========================================
+// ВРЕМЕННОЕ ОГРАНИЧЕНИЕ МОБИЛЬНОЙ ВЕРСИИ
+// ========================================
+
+// Мобильную композицию второго слайда
+// реализуем отдельно по мобильному макету.
+
+@media (max-width: 767px) {
+
+  .slide--02 {
+    display: none;
+  }
+}

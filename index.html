@@ -1,83 +1,398 @@
-
 <!doctype html>
 <html lang="ru">
   <head>
     <meta charset="UTF-8" />
+
     <meta
       name="viewport"
       content="width=device-width, initial-scale=1.0"
     />
+
     <meta
       name="description"
       content="YAMAGUCHI Hair Styler — фен и стайлер 2 в 1"
     />
+
     <title>YAMAGUCHI Hair Styler</title>
   </head>
 
   <body>
     <main class="presentation">
 
-      <!-- Слайд 1 -->
-      <section class="slide slide--01" id="slide-01">
+      <!-- Первый слайд -->
+      <section
+        class="slide slide--01"
+        id="slide-01"
+        data-slide="0"
+      >
+        <div class="slide__content">
+          <div class="slide-01__stage">
 
+            <!-- Основная композиция первого слайда -->
+            <div class="slide-01__composition">
+
+              <!-- Заголовок и плашка -->
+              <header class="slide-01__header">
+                <h1 class="slide-01__title">
+                  ФЕН И СТАЙЛЕР
+                  <span>в уникальном дизайне</span>
+                </h1>
+
+                <span class="slide-01__badge">
+                  2 в 1
+                </span>
+              </header>
+
+              <!-- Центральная иллюстрация -->
+              <picture class="slide-01__main-image">
+                <source
+                  media="(max-width: 767px)"
+                  srcset="/images/slide-01/slide-01-main-mobile.png"
+                />
+
+                <img
+                  src="/images/slide-01-main.png"
+                  alt="Фен и стайлер YAMAGUCHI"
+                />
+              </picture>
+
+              <!-- Боковые карточки -->
+              <div class="slide-01__cards">
+
+                <!-- Карточка фена -->
+                <article class="slide-01__card">
+                  <span class="slide-01__card-label">
+                    Фен
+                  </span>
+
+                  <img
+                    src="/images/slide-01-hairdryer.png"
+                    alt="Укладка волос феном"
+                  />
+                </article>
+
+                <!-- Карточка стайлера -->
+                <article class="slide-01__card">
+                  <span class="slide-01__card-label">
+                    Стайлер
+                  </span>
+
+                  <img
+                    src="/images/slide-01-styler.png"
+                    alt="Укладка волос стайлером"
+                  />
+                </article>
+
+              </div>
+            </div>
+
+            <!-- Боковое колесо первого слайда -->
+            <nav
+              class="slide-01__wheel"
+              aria-label="Навигация по слайдам"
+            >
+              <span
+                class="slide-01__wheel-arc"
+                aria-hidden="true"
+              ></span>
+
+              <!-- Переход ко второму слайду -->
+              <button
+                class="slide-01__wheel-button slide-01__wheel-button--feather"
+                type="button"
+                data-slide-target="1"
+                aria-label="Слайд 2: Суперлёгкий"
+              >
+                <img
+                  src="/icons/feather.svg"
+                  alt=""
+                />
+              </button>
+
+              <!-- Активная кнопка первого слайда -->
+              <div class="slide-01__wheel-active">
+                <button
+                  class="slide-01__wheel-button slide-01__wheel-button--active"
+                  type="button"
+                  data-slide-target="0"
+                  aria-label="Текущий слайд: Фен-стайлер 2 в 1"
+                  aria-current="step"
+                >
+                  <img
+                    src="/icons/hairdryer.svg"
+                    alt=""
+                  />
+                </button>
+
+                <span class="slide-01__wheel-label">
+                  ФЕН-СТАЙЛЕР
+                  <span>2 В 1</span>
+                </span>
+              </div>
+
+              <!-- Переход к третьему слайду -->
+              <button
+                class="slide-01__wheel-button slide-01__wheel-button--motor"
+                type="button"
+                data-slide-target="2"
+                aria-label="Слайд 3: Инновационный японский мотор"
+              >
+                <img
+                  src="/icons/motor.svg"
+                  alt=""
+                />
+              </button>
+
+            </nav>
+          </div>
+        </div>
+      </section>
+
+      <!-- Второй слайд -->
+      <section
+        class="slide slide--02"
+        id="slide-02"
+        data-slide="1"
+      >
         <div class="slide__content">
 
-          <div class="slide-01__composition">
+          <!-- Общая сцена второго слайда -->
+          <div class="slide-01__stage slide-02__stage">
 
-            <!-- Заголовок -->
-            <header class="slide-01__header">
-              <h1 class="slide-01__title">
-                ФЕН И СТАЙЛЕР
-                <span>в уникальном дизайне</span>
-              </h1>
-              <span class="slide-01__badge">2 в 1</span>
-            </header>
+            <!-- Основная композиция -->
+            <div class="slide-02__composition">
 
-            <!-- Центральное изображение -->
-            <picture class="slide-01__main-image">
-              <source
-                media="(max-width: 767px)"
-                srcset="/images/slide-01/slide-01-main-mobile.png"
-              />
-              <img
-                src="/images/slide-01-main.png"
-                alt="Фен и стайлер YAMAGUCHI"
-              />
-            </picture>
+              <!-- Декоративное фоновое свечение -->
+              <span
+                class="slide-02__glow"
+                aria-hidden="true"
+              ></span>
 
-            <!-- Карточки -->
-            <div class="slide-01__cards">
-
-              <article class="slide-01__card">
-                <span class="slide-01__card-label">
-                  Фен
-                </span>
-                <img
-                  src="/images/slide-01-hairdryer.png"
-                  alt="Укладка волос феном"
+              <!-- Изображение модели -->
+              <picture class="slide-02__model">
+                <source
+                  media="(max-width: 767px)"
+                  srcset="/images/slide-02/slide-02-model-mobile.png"
                 />
-              </article>
 
-              <article class="slide-01__card">
-                <span class="slide-01__card-label">
-                  Стайлер
-                </span>
                 <img
-                  src="/images/slide-01-styler.png"
-                  alt="Укладка волос стайлером"
+                  src="/images/slide-02/slide-02-model.png"
+                  alt="Девушка с феном-стайлером и чашкой кофе"
+                  decoding="async"
                 />
-              </article>
+              </picture>
+
+              <!-- Декоративная звезда -->
+              <div class="slide-02__star">
+                <span class="slide-02__star-text">
+                  Не тяжелее
+                  <br />
+                  чашки кофе
+                </span>
+              </div>
+
+              <!-- Заголовок второго слайда -->
+              <h2 class="slide-02__title">
+                СУПЕР-
+                <span>ЛЁГКИЙ</span>
+              </h2>
+
+              <!-- Описание второго слайда -->
+              <p class="slide-02__description">
+                Уменьшает усталость рук
+                <br />
+                при сушке волос, делая процедуру
+                <br />
+                удобной и приятной даже после
+                <br />
+                напряжённого рабочего дня.
+              </p>
+
+              <!-- Плашка с весом устройства -->
+              <span class="slide-02__badge">
+                500 г
+              </span>
 
             </div>
 
+            <!-- Боковое колесо второго слайда -->
+            <nav
+              class="slide-01__wheel slide-02__wheel"
+              aria-label="Навигация по слайдам"
+            >
+              <span
+                class="slide-01__wheel-arc"
+                aria-hidden="true"
+              ></span>
+
+              <!-- Переход к третьему слайду -->
+              <button
+                class="slide-01__wheel-button slide-02__wheel-button--motor"
+                type="button"
+                data-slide-target="2"
+                aria-label="Слайд 3: Инновационный японский мотор"
+              >
+                <img
+                  src="/icons/motor.svg"
+                  alt=""
+                />
+              </button>
+
+              <!-- Активная кнопка второго слайда -->
+              <div class="slide-01__wheel-active">
+                <button
+                  class="slide-01__wheel-button slide-01__wheel-button--active"
+                  type="button"
+                  data-slide-target="1"
+                  aria-label="Текущий слайд: Суперлёгкий"
+                  aria-current="step"
+                >
+                  <img
+                    src="/icons/feather.svg"
+                    alt=""
+                  />
+                </button>
+
+                <span class="slide-01__wheel-label">
+                  СУПЕРЛЁГКИЙ
+                </span>
+              </div>
+
+              <!-- Возвращение к первому слайду -->
+              <button
+                class="slide-01__wheel-button slide-02__wheel-button--hairdryer"
+                type="button"
+                data-slide-target="0"
+                aria-label="Слайд 1: Фен-стайлер 2 в 1"
+              >
+                <img
+                  src="/icons/hairdryer.svg"
+                  alt=""
+                />
+              </button>
+
+            </nav>
           </div>
-
         </div>
+      </section>
 
+      <!-- Третий слайд -->
+      <section
+        class="slide slide--03"
+        id="slide-03"
+        data-slide="2"
+      >
+        <div class="slide__content">
+
+          <!-- Общая сцена третьего слайда -->
+          <div class="slide-01__stage slide-03__stage">
+
+            <!-- Основная композиция третьего слайда -->
+            <div class="slide-03__composition">
+
+              <!-- Изображение двигателя с фоновыми эффектами -->
+              <picture class="slide-03__technology">
+                <source
+                  media="(max-width: 767px)"
+                  srcset="/images/slide-03/slide-03-technology-mobile.png"
+                />
+
+                <img
+                  src="/images/slide-03/slide-03-technology.png"
+                  alt="Внутреннее устройство бесщёточного мотора YAMAGUCHI"
+                  decoding="async"
+                />
+              </picture>
+
+              <!-- Основной заголовок третьего слайда -->
+              <h2 class="slide-03__title">
+                ДЛЯ ЦЕНИТЕЛЕЙ КОМФОРТА
+                <span>
+                  И КАЧЕСТВА В УХОДЕ ЗА ВОЛОСАМИ
+                </span>
+              </h2>
+
+              <!-- Подзаголовок третьего слайда -->
+              <p class="slide-03__subtitle">
+                Бесщеточный мотор BLDC
+              </p>
+
+              <!-- Декоративная звезда -->
+              <div class="slide-03__star">
+                <span class="slide-03__star-text">
+                  Салонная
+                  <br />
+                  мощность
+                </span>
+              </div>
+
+            </div>
+
+            <!-- Боковое колесо третьего слайда -->
+            <nav
+              class="slide-01__wheel slide-03__wheel"
+              aria-label="Навигация по слайдам"
+            >
+              <span
+                class="slide-01__wheel-arc"
+                aria-hidden="true"
+              ></span>
+
+              <!-- Переход к первому слайду -->
+              <button
+                class="slide-01__wheel-button slide-03__wheel-button--hairdryer"
+                type="button"
+                data-slide-target="0"
+                aria-label="Слайд 1: Фен-стайлер 2 в 1"
+              >
+                <img
+                  src="/icons/hairdryer.svg"
+                  alt=""
+                />
+              </button>
+
+              <!-- Активная кнопка третьего слайда -->
+              <div class="slide-01__wheel-active">
+                <button
+                  class="slide-01__wheel-button slide-01__wheel-button--active"
+                  type="button"
+                  data-slide-target="2"
+                  aria-label="Текущий слайд: Инновационный японский мотор"
+                  aria-current="step"
+                >
+                  <img
+                    src="/icons/motor.svg"
+                    alt=""
+                  />
+                </button>
+
+                <span class="slide-01__wheel-label">
+                  ИННОВАЦИОННЫЙ
+                  <span>ЯПОНСКИЙ МОТОР</span>
+                </span>
+              </div>
+
+              <!-- Переход ко второму слайду -->
+              <button
+                class="slide-01__wheel-button slide-03__wheel-button--feather"
+                type="button"
+                data-slide-target="1"
+                aria-label="Слайд 2: Суперлёгкий"
+              >
+                <img
+                  src="/icons/feather.svg"
+                  alt=""
+                />
+              </button>
+
+            </nav>
+          </div>
+        </div>
       </section>
 
     </main>
 
+    <!-- Подключение основного JavaScript-модуля -->
     <script type="module" src="/src/main.js"></script>
   </body>
 </html>

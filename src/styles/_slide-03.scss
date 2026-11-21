@@ -1,0 +1,346 @@
+@use 'sass:math';
+@use 'sass:list';
+@use './variables' as vars;
+
+// ========================================
+// ПАРАМЕТРЫ ИСХОДНОГО МАКЕТА
+// ========================================
+
+$composition-width: 1240;
+$composition-height: 800;
+
+// ========================================
+// ФУНКЦИИ АДАПТИВНЫХ РАЗМЕРОВ
+// ========================================
+
+// Размер относительно ширины контейнера.
+
+@function design($value) {
+  @return math.div(
+    $value,
+    $composition-width
+  ) * 100cqw;
+}
+
+// Горизонтальная координата композиции.
+
+@function horizontal($value) {
+  @return math.div(
+    $value,
+    $composition-width
+  ) * 100%;
+}
+
+// Вертикальная координата композиции.
+
+@function vertical($value) {
+  @return math.div(
+    $value,
+    $composition-height
+  ) * 100%;
+}
+
+// ========================================
+// ДЕСКТОПНАЯ ВЁРСТКА ТРЕТЬЕГО СЛАЙДА
+// ========================================
+
+@media (min-width: 768px) {
+
+  // ======================================
+  // ОСНОВНАЯ КОМПОЗИЦИЯ
+  // ======================================
+
+  .slide-03__composition {
+    position: absolute;
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    container-type: inline-size;
+    isolation: isolate;
+
+    overflow: hidden;
+
+    border-radius: design(70);
+
+    background-color: vars.$color-card-bg;
+  }
+
+  // ======================================
+  // ИЗОБРАЖЕНИЕ ДВИГАТЕЛЯ
+  // ======================================
+
+  .slide-03__technology {
+    position: absolute;
+    z-index: 1;
+
+    inset: 0;
+
+    display: block;
+
+    width: 100%;
+    height: 100%;
+
+    // Исходное изображение уже содержит
+    // фоновое свечение и световые эффекты.
+
+    img {
+      display: block;
+
+      width: 100%;
+      height: 100%;
+
+      max-width: none;
+
+      object-fit: cover;
+      object-position: center;
+    }
+  }
+
+  // ======================================
+  // ОСНОВНОЙ ЗАГОЛОВОК
+  // ======================================
+
+  .slide-03__title {
+    position: absolute;
+    z-index: 3;
+
+    left: horizontal(312);
+    top: vertical(53.07);
+
+    width: horizontal(861);
+
+    margin: 0;
+
+    color: #454545;
+
+    // Используем шрифт с поддержкой кириллицы.
+    // Размер компенсирует различие ширины букв
+    // Montserrat и оригинального шрифта.
+
+    font-family: vars.$font-secondary;
+    font-size: design(43);
+    font-weight: 600;
+
+    line-height: design(55);
+    letter-spacing: -0.01em;
+
+    text-align: right;
+    white-space: nowrap;
+
+    span {
+      display: block;
+    }
+  }
+
+  // ======================================
+  // ПОДЗАГОЛОВОК
+  // ======================================
+
+  .slide-03__subtitle {
+    position: absolute;
+    z-index: 3;
+
+    left: horizontal(730);
+    top: vertical(177);
+
+    width: horizontal(443);
+
+    margin: 0;
+
+    color: #737373;
+
+    font-family: vars.$font-secondary;
+    font-size: design(33);
+    font-weight: 600;
+
+    line-height: design(39);
+    letter-spacing: -0.01em;
+
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  // ======================================
+  // ДЕКОРАТИВНАЯ ЗВЕЗДА
+  // ======================================
+
+  .slide-03__star {
+    position: absolute;
+    z-index: 4;
+
+    left: horizontal(1014);
+    top: vertical(582);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: design(180);
+
+    aspect-ratio: 1;
+
+    // Формируем звезду из пятнадцати лучей.
+    // Внутренний радиус составляет 88,2%
+    // от внешнего радиуса согласно Figma.
+
+    $star-points: ();
+
+    @for $index from 0 through 29 {
+      $angle: -90deg + $index * 12deg;
+
+      $radius: 50%;
+
+      @if $index % 2 == 1 {
+        $radius: 44.1%;
+      }
+
+      $x: 50% + $radius * math.cos($angle);
+      $y: 50% + $radius * math.sin($angle);
+
+      $star-points: list.append(
+        $star-points,
+        #{$x} #{$y},
+        comma
+      );
+    }
+
+    clip-path: polygon($star-points);
+
+    background-color: #4b4b4b;
+  }
+
+  // ======================================
+  // ТЕКСТ ДЕКОРАТИВНОЙ ЗВЕЗДЫ
+  // ======================================
+
+  .slide-03__star-text {
+    display: block;
+
+    color: vars.$color-white;
+
+    font-family: vars.$font-secondary;
+    font-size: design(21.86);
+    font-weight: 600;
+
+    line-height: 1.13;
+    letter-spacing: -0.01em;
+
+    text-align: center;
+  }
+
+  // ======================================
+  // БОКОВОЕ КОЛЕСО НАВИГАЦИИ
+  // ======================================
+
+  .slide-03__wheel {
+
+    // Повторяем геометрию расположения
+    // колеса второго слайда.
+
+    .slide-01__wheel-arc {
+      top: design(47);
+    }
+
+    // Располагаем активную иконку
+    // на центральной позиции колеса.
+
+    .slide-01__wheel-active {
+      left: design(-243);
+      top: design(353);
+    }
+
+    // Активная иконка двигателя.
+
+    .slide-01__wheel-button--active {
+
+      &::before {
+        left: 11%;
+        top: 11%;
+
+        width: 78%;
+        height: 78%;
+
+        background-color: vars.$color-icon-active;
+
+        mask:
+          url('/icons/motor.svg')
+          center / contain no-repeat;
+      }
+    }
+
+    // Подпись активного слайда.
+
+    .slide-01__wheel-label {
+      font-family: vars.$font-secondary;
+      font-size: design(24);
+      font-weight: 600;
+
+      line-height: design(33);
+      letter-spacing: -0.01em;
+
+      white-space: nowrap;
+    }
+  }
+
+  // ======================================
+  // ВЕРХНЯЯ КНОПКА КОЛЕСА
+  // ======================================
+
+  .slide-03__wheel-button--hairdryer {
+    left: design(-272);
+    top: design(253);
+
+    img {
+      width: 75%;
+      height: 58%;
+    }
+  }
+
+  // ======================================
+  // НИЖНЯЯ КНОПКА КОЛЕСА
+  // ======================================
+
+  .slide-03__wheel-button--feather {
+    left: design(-272);
+    top: design(472);
+
+    img {
+      width: math.div(44.87, 74) * 100%;
+      height: math.div(41.74, 74) * 100%;
+    }
+  }
+}
+
+// ========================================
+// АДАПТАЦИЯ ДЛЯ ПЛАНШЕТОВ
+// ========================================
+
+@media (min-width: 768px) and (max-width: 1199px) {
+
+  .slide--03 {
+
+    .slide__content {
+      justify-content: flex-end;
+
+      box-sizing: border-box;
+
+      padding-right: 3%;
+    }
+  }
+}
+
+// ========================================
+// ВРЕМЕННОЕ ОГРАНИЧЕНИЕ МОБИЛЬНОЙ ВЕРСИИ
+// ========================================
+
+// Мобильную композицию третьего слайда
+// реализуем отдельно по мобильному макету.
+
+@media (max-width: 767px) {
+
+  .slide--03 {
+    display: none;
+  }
+}

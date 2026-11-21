@@ -1,5 +1,59 @@
-
+@use 'sass:math';
 @use './variables' as vars;
+
+// ========================================
+// ПАРАМЕТРЫ ИСХОДНОГО МАКЕТА
+// ========================================
+
+$desktop-width: 1920;
+
+$composition-width: 1240;
+$composition-height: 800;
+
+$photo-width: 242.82;
+$photo-export-width: 283;
+
+$photo-offset-x: 4;
+$photo-offset-y: 7;
+
+// ========================================
+// ЦВЕТОВАЯ ПАЛИТРА
+// ========================================
+
+$color-composition: #a29c9a;
+$color-text-dark: #454545;
+
+$color-wheel-inactive: #746d68;
+$color-wheel-active: #dbdbdb;
+$color-wheel-icon-active: #726965;
+
+// ========================================
+// ФУНКЦИИ АДАПТИВНЫХ РАЗМЕРОВ
+// ========================================
+
+// Размер относительно ширины контейнера.
+@function design($value) {
+  @return math.div(
+    $value,
+    $composition-width
+  ) * 100cqw;
+}
+
+// Горизонтальные координаты композиции.
+@function horizontal($value) {
+  @return math.div(
+    $value,
+    $composition-width
+  ) * 100%;
+}
+
+// Вертикальные координаты композиции.
+@function vertical($value) {
+  @return math.div(
+    $value,
+    $composition-height
+  ) * 100%;
+}
 
 // ========================================
 // ДЕСКТОПНАЯ ВЁРСТКА
@@ -7,9 +61,9 @@
 
 @media (min-width: 768px) {
 
-  // ========================================
+  // ======================================
   // ОБЩАЯ СТРУКТУРА СЛАЙДОВ
-  // ========================================
+  // ======================================
 
   .presentation {
     width: 100%;
@@ -41,216 +95,560 @@
     min-height: 100svh;
   }
 
-  // ========================================
-  // ПЕРВЫЙ СЛАЙД — ОСНОВНАЯ КОМПОЗИЦИЯ
-  // ========================================
+  // ======================================
+  // ПЕРВЫЙ СЛАЙД — ОБЩАЯ СЦЕНА
+  // ======================================
 
-  .slide-01__composition {
+  .slide-01__stage {
     position: relative;
-    isolation: isolate;
 
-    // Ограничиваем размеры шириной и высотой окна.
-    // Исходные пропорции макета сохраняются.
+    // Учитываем ширину, высоту окна
+    // и пространство боковой навигации.
 
     width: min(
-      1240px,
-      calc(100% - 48px),
-      calc((100svh - 48px) * 1.55)
+      #{$composition-width}px,
+      calc(
+        100% *
+        #{$composition-width} /
+        #{$desktop-width}
+      ),
+      calc(
+        (100svh - 48px) *
+        #{$composition-width} /
+        #{$composition-height}
+      )
     );
 
-    aspect-ratio: 1240 / 800;
+    aspect-ratio:
+      $composition-width / $composition-height;
 
-    // Единицы cqw внутри композиции позволяют
-    // пропорционально изменять размеры текста.
+    flex-shrink: 0;
 
     container-type: inline-size;
 
-    flex-shrink: 0;
-    overflow: hidden;
-
-    border-radius: 5.645%;
-
-    // Мягкие световые пятна на фоне композиции.
-
-    background:
-      radial-gradient(
-        ellipse at 50% 15%,
-        rgb(255 255 255 / 42%) 0%,
-        transparent 55%
-      ),
-      radial-gradient(
-        ellipse at 70% 65%,
-        rgb(255 151 108 / 22%) 0%,
-        transparent 50%
-      ),
-      radial-gradient(
-        ellipse at 30% 45%,
-        rgb(255 215 174 / 20%) 0%,
-        transparent 50%
-      ),
-      #a29c9a;
+    overflow: visible;
   }
 
-  // ========================================
+  // ======================================
+  // ПЕРВЫЙ СЛАЙД — ОСНОВНАЯ КОМПОЗИЦИЯ
+  // ======================================
+
+  .slide-01__composition {
+    position: absolute;
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    container-type: inline-size;
+    isolation: isolate;
+
+    border-radius: design(70);
+
+    overflow: hidden;
+
+    // Декоративное освещение построено
+    // по геометрии трёх эллипсов Figma.
+    // Фоновый цвет используется как резервный.
+
+    background-color: $color-composition;
+
+    background-image:
+      url('/images/slide-01/slide-01-background.svg');
+
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100% 100%;
+  }
+
+  // ======================================
   // ПЕРВЫЙ СЛАЙД — ЗАГОЛОВОК
-  // ========================================
+  // ======================================
 
   .slide-01__header {
     position: absolute;
     z-index: 5;
 
-    top: 5.25%;
+    top: vertical(55);
     left: 0;
 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
     width: 100%;
+
     text-align: center;
   }
 
   .slide-01__title {
     margin: 0;
 
-    color: #454545;
+    color: $color-text-dark;
 
-    font-size: 3.065cqw;
+    font-size: design(42);
     font-weight: 700;
     line-height: 1.05;
 
     span {
       display: block;
-      font-size: 2.742cqw;
+
+      font-size: inherit;
     }
   }
 
-  // ========================================
+  // ======================================
   // ПЕРВЫЙ СЛАЙД — ПЛАШКА «2 В 1»
-  // ========================================
+  // ======================================
 
   .slide-01__badge {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 
-    margin-top: 1.13cqw;
-    padding: 0.48cqw 1.45cqw;
+    min-width: design(160);
+    min-height: design(74);
 
-    border-radius: 50px;
+    margin-top: design(37);
+    padding: 0 design(20);
+
+    box-sizing: border-box;
+
+    border-radius: design(40);
+
     background-color: vars.$color-white;
+    color: $color-text-dark;
 
-    color: #454545;
-    font-size: 2.419cqw;
+    font-size: design(52);
     font-weight: 700;
-    line-height: 1.1;
+    line-height: 1;
+
+    white-space: nowrap;
 
     box-shadow:
-      0 0.65cqw 1.61cqw rgb(0 0 0 / 15%);
+      0 design(8) design(20)
+      rgb(0 0 0 / 15%);
   }
 
-  // ========================================
+  // ======================================
   // ПЕРВЫЙ СЛАЙД — ЦЕНТРАЛЬНОЕ ИЗОБРАЖЕНИЕ
-  // ========================================
+  // ======================================
 
   .slide-01__main-image {
     position: absolute;
     z-index: 2;
 
     left: 50%;
-    bottom: 0;
+    bottom: vertical(-3);
 
     display: block;
 
-    // Исходная ширина: 674 px из 1240 px.
-
-    width: 54.355%;
+    width: horizontal(674);
 
     transform: translateX(-50%);
 
     img {
       display: block;
+
       width: 100%;
       height: auto;
     }
   }
 
-  // ========================================
+  // ======================================
   // ПЕРВЫЙ СЛАЙД — КОНТЕЙНЕР КАРТОЧЕК
-  // ========================================
+  // ======================================
 
   .slide-01__cards {
     position: absolute;
     z-index: 3;
+
     inset: 0;
 
     pointer-events: none;
   }
 
-  // ========================================
+  // ======================================
   // ПЕРВЫЙ СЛАЙД — КАРТОЧКИ
-  // ========================================
+  // ======================================
 
   .slide-01__card {
     position: absolute;
 
-    // Высота и ширина относительно композиции.
+    display: flex;
+    flex-direction: column;
 
-    bottom: 5.25%;
-    width: 19.597%;
-    height: 63.375%;
+    top: vertical(244);
+
+    width: horizontal($photo-width);
+
+    gap: design(20);
 
     pointer-events: auto;
 
     &:first-child {
-      left: 4.194%;
+      left: horizontal(52);
     }
 
     &:last-child {
-      right: 4.194%;
+      right: horizontal(
+        $composition-width -
+        945 -
+        $photo-width
+      );
     }
 
     img {
       display: block;
 
-      width: 100%;
-      height: 100%;
+      flex: 0 0 auto;
+      align-self: flex-start;
 
-      object-fit: cover;
+      // Учитываем прозрачные поля
+      // и встроенные тени экспортированных PNG.
 
-      border-radius: 2.58cqw;
+      width: math.div(
+        $photo-export-width,
+        243
+      ) * 100%;
 
-      box-shadow:
-        0 0.65cqw 1.45cqw rgb(0 0 0 / 12%);
+      max-width: none;
+
+      height: auto;
+      aspect-ratio: auto;
+
+      margin-left: math.div(
+        -$photo-offset-x,
+        243
+      ) * 100%;
+
+      margin-top: math.div(
+        -$photo-offset-y,
+        243
+      ) * 100%;
+
+      object-fit: contain;
+
+      // Не дублируем эффекты оригинального PNG.
+
+      border-radius: 0;
+      box-shadow: none;
+      background: transparent;
     }
   }
 
-  // ========================================
+  // ======================================
   // ПЕРВЫЙ СЛАЙД — ПОДПИСИ КАРТОЧЕК
-  // ========================================
+  // ======================================
 
   .slide-01__card-label {
-    position: absolute;
+    position: relative;
     z-index: 4;
 
-    top: -3.63cqw;
-    left: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 
-    padding: 0.65cqw 1.61cqw;
+    flex: 0 0 auto;
 
-    transform: translateX(-50%);
+    height: design(55.86);
 
-    border-radius: 30px;
+    padding: 0 design(27.87);
+
+    box-sizing: border-box;
+
+    border-radius: design(33.58);
 
     background-color: vars.$color-white;
-    color: #454545;
+    color: $color-text-dark;
 
-    font-size: 1.774cqw;
+    font-size: design(28);
     font-weight: 600;
+    line-height: 1;
+
     white-space: nowrap;
 
     box-shadow:
-      0 0.4cqw 0.97cqw rgb(0 0 0 / 15%);
+      design(5) design(7) design(15)
+      rgb(0 0 0 / 15%);
   }
 
-  // Тёмная подпись левой карточки.
+  // Подпись левой карточки.
 
-  .slide-01__card:first-child .slide-01__card-label {
-    background-color: #454545;
+  .slide-01__card:first-child {
+    .slide-01__card-label {
+      align-self: flex-start;
+
+      background-color: $color-text-dark;
+      color: vars.$color-white;
+    }
+  }
+
+  // Подпись правой карточки.
+
+  .slide-01__card:last-child {
+    .slide-01__card-label {
+      align-self: flex-end;
+
+      width: design(172.74);
+
+      padding: 0;
+    }
+  }
+
+  // ======================================
+  // ПЕРВЫЙ СЛАЙД — КОЛЕСО НАВИГАЦИИ
+  // ======================================
+
+  .slide-01__wheel {
+    position: absolute;
+    z-index: 10;
+
+    inset: 0;
+
+    pointer-events: none;
+  }
+
+  // ======================================
+  // КОЛЕСО — ОРИГИНАЛЬНАЯ SVG-ДУГА
+  // ======================================
+
+  .slide-01__wheel-arc {
+    position: absolute;
+
+    // Используем полный контур исходной дуги,
+    // включая ранее обрезанную левую часть.
+
+    background-image:
+      url('/icons/wheel-arc.svg');
+
+    background-repeat: no-repeat;
+    background-position: right center;
+    background-size: contain;
+
+    // Расширяем область отображения влево,
+    // сохраняя положение правой части дуги.
+
+    width: design(288);
+    height: design(706);
+
+    left: design(-498);
+    top: design(282);
+
+    pointer-events: none;
+  }
+
+  // ======================================
+  // КОЛЕСО — ОБЩИЕ СТИЛИ КНОПОК
+  // ======================================
+
+  .slide-01__wheel-button {
+    position: absolute;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: design(74);
+    aspect-ratio: 1;
+
+    padding: 0;
+
+    border: 0;
+    border-radius: 50%;
+
+    background-color: $color-wheel-inactive;
+
+    box-shadow:
+      design(7) design(10) design(20)
+      rgb(0 0 0 / 22%);
+
+    pointer-events: auto;
+
+    img {
+      display: block;
+
+      width: 74%;
+      height: 74%;
+
+      object-fit: contain;
+    }
+
+    // Остальные слайды пока не подключены.
+
+    &:disabled {
+      cursor: default;
+    }
+
+    &:focus-visible {
+      outline: 2px solid vars.$color-white;
+      outline-offset: 4px;
+    }
+  }
+
+  // ======================================
+  // КОЛЕСО — ВЕРХНЯЯ КНОПКА
+  // ======================================
+
+  .slide-01__wheel-button--feather {
+    left: design(-272);
+    top: design(488);
+
+    img {
+      // Размер символа относительно диаметра
+      // неактивной кнопки.
+
+      width: math.div(44.87, 74) * 100%;
+      height: math.div(41.74, 74) * 100%;
+    }
+  }
+
+  // ======================================
+  // КОЛЕСО — НИЖНЯЯ КНОПКА
+  // ======================================
+
+  .slide-01__wheel-button--motor {
+    left: design(-272);
+    top: design(707);
+  }
+
+  // ======================================
+  // КОЛЕСО — АКТИВНАЯ ГРУППА
+  // ======================================
+
+  .slide-01__wheel-active {
+    position: absolute;
+
+    left: design(-243);
+    top: design(588);
+
+    display: flex;
+    align-items: center;
+
+    gap: design(18);
+
+    width: max-content;
+
+    pointer-events: none;
+  }
+
+  // ======================================
+  // КОЛЕСО — АКТИВНАЯ КНОПКА
+  // ======================================
+
+  .slide-01__wheel-button--active {
+    position: relative;
+
+    flex: 0 0 auto;
+
+    width: design(103);
+    aspect-ratio: 1;
+
+    background-color: $color-wheel-active;
+
+    pointer-events: auto;
+
+    cursor: default;
+
+    // Исходная иконка остаётся в разметке.
+    // Для точного воспроизведения цвета
+    // используем оригинальный SVG как маску.
+
+    img {
+      display: none;
+    }
+
+    &::before {
+      content: '';
+
+      position: absolute;
+
+      // Размеры и координаты символа рассчитываем
+      // относительно диаметра активной кнопки.
+
+      left: math.div(12.8, 103) * 100%;
+      top: math.div(26.82, 103) * 100%;
+
+      width: math.div(77.55, 103) * 100%;
+      height: math.div(59.5, 103) * 100%;
+
+      background-color: $color-wheel-icon-active;
+
+      mask:
+        url('/icons/hairdryer.svg')
+        center / contain no-repeat;
+
+      pointer-events: none;
+    }
+  }
+
+  // ======================================
+  // КОЛЕСО — ПОДПИСЬ АКТИВНОГО СЛАЙДА
+  // ======================================
+
+  .slide-01__wheel-label {
+    display: block;
+
     color: vars.$color-white;
+
+    font-family: 'Montserrat', sans-serif;
+
+    // Компенсируем различие ширины символов
+    // оригинального и резервного шрифтов.
+
+    font-size: design(24);
+    font-weight: 600;
+
+    // Сохраняем межстрочный интервал
+    // и межбуквенное расстояние из макета.
+
+    line-height: design(33);
+    letter-spacing: -0.01em;
+
+    // Воспроизводим параметры тени текста.
+
+    text-shadow:
+      design(4) design(4) design(13)
+      rgb(0 0 0 / 25%);
+
+    white-space: nowrap;
+
+    span {
+      display: block;
+    }
+  }
+}
+
+// ========================================
+// АДАПТАЦИЯ ДЛЯ ПЛАНШЕТОВ
+// ========================================
+
+@media (min-width: 768px) and (max-width: 1199px) {
+
+  .slide--01 {
+    .slide__content {
+      // Увеличиваем полезную площадь композиции,
+      // сохраняя слева место для навигации.
+
+      justify-content: flex-end;
+
+      box-sizing: border-box;
+
+      padding-right: 3%;
+    }
+  }
+
+  .slide-01__stage {
+    // Используем больше доступной ширины,
+    // не нарушая исходное соотношение сторон.
+
+    width: min(
+      78.35%,
+      calc(
+        (100svh - 48px) *
+        #{$composition-width} /
+        #{$composition-height}
+      )
+    );
   }
 }
