@@ -1,18 +1,22 @@
-
-@use './variables';
+@use './variables' as vars;
 @use './reset';
 @use './fonts';
 @use './desktop';
 @use './mobile';
 
 body {
-  background-color: #f5f5f5;
-  font-family: Arial, sans-serif;
+  min-width: 320px;
+  margin: 0;
+  font-family: 'Montserrat', 'Euclid Circular A', sans-serif;
+  background-color: vars.$color-slide-bg;
+  color: vars.$color-white;
 }
 
-.test-title {
-  margin-top: 100px;
-  text-align: center;
-  font-size: 36px;
-  color: #746d68;
+img {
+  display: block;
+  max-width: 100%;
+}
+
+button {
+  font: inherit;
 }

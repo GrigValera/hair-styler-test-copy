@@ -1,0 +1,35 @@
+
+/* Шрифты */
+$font-primary: 'Euclid Circular A', 'Montserrat', sans-serif;
+$font-secondary: 'Montserrat', sans-serif;
+
+/* Цвета по макету */
+$color-slide-bg: #7f7875;
+$color-card-bg: #a29c9a;
+$color-wheel-line: #625b56;
+$color-icon-active-bg: #dbdbdb;
+$color-icon-inactive-bg: #746d68;
+$color-icon-inactive: #adacac;
+$color-icon-active: #726965;
+$color-white: #ffffff;
+
+/* Отступы по макету */
+$desktop-design-width: 1920px;
+$desktop-design-height: 900px;
+$slide-content-width: 1240px;
+$slide-content-height: 800px;
+$slide-border-radius: 70px;
+
+/* Навигация колеса */
+$wheel-diameter: 706px;
+$wheel-icon-size: 74px;
+$wheel-icon-active-size: 103px;
+$wheel-line-width: 10.97px;
+
+/* Мобильная версия */
+$mobile-design-width: 320px;
+$mobile-card-radius: 24.91px;
+$mobile-card-gap: 10px;
+
+/* Брейкпоинты */
+$breakpoint-mobile: 767px;

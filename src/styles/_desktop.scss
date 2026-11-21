@@ -1,0 +1,256 @@
+
+@use './variables' as vars;
+
+// ========================================
+// ДЕСКТОПНАЯ ВЁРСТКА
+// ========================================
+
+@media (min-width: 768px) {
+
+  // ========================================
+  // ОБЩАЯ СТРУКТУРА СЛАЙДОВ
+  // ========================================
+
+  .presentation {
+    width: 100%;
+  }
+
+  .slide {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+    min-height: 100vh;
+    min-height: 100svh;
+
+    overflow: hidden;
+  }
+
+  .slide__content {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+    min-height: 100vh;
+    min-height: 100svh;
+  }
+
+  // ========================================
+  // ПЕРВЫЙ СЛАЙД — ОСНОВНАЯ КОМПОЗИЦИЯ
+  // ========================================
+
+  .slide-01__composition {
+    position: relative;
+    isolation: isolate;
+
+    // Ограничиваем размеры шириной и высотой окна.
+    // Исходные пропорции макета сохраняются.
+
+    width: min(
+      1240px,
+      calc(100% - 48px),
+      calc((100svh - 48px) * 1.55)
+    );
+
+    aspect-ratio: 1240 / 800;
+
+    // Единицы cqw внутри композиции позволяют
+    // пропорционально изменять размеры текста.
+
+    container-type: inline-size;
+
+    flex-shrink: 0;
+    overflow: hidden;
+
+    border-radius: 5.645%;
+
+    // Мягкие световые пятна на фоне композиции.
+
+    background:
+      radial-gradient(
+        ellipse at 50% 15%,
+        rgb(255 255 255 / 42%) 0%,
+        transparent 55%
+      ),
+      radial-gradient(
+        ellipse at 70% 65%,
+        rgb(255 151 108 / 22%) 0%,
+        transparent 50%
+      ),
+      radial-gradient(
+        ellipse at 30% 45%,
+        rgb(255 215 174 / 20%) 0%,
+        transparent 50%
+      ),
+      #a29c9a;
+  }
+
+  // ========================================
+  // ПЕРВЫЙ СЛАЙД — ЗАГОЛОВОК
+  // ========================================
+
+  .slide-01__header {
+    position: absolute;
+    z-index: 5;
+
+    top: 5.25%;
+    left: 0;
+
+    width: 100%;
+    text-align: center;
+  }
+
+  .slide-01__title {
+    margin: 0;
+
+    color: #454545;
+
+    font-size: 3.065cqw;
+    font-weight: 700;
+    line-height: 1.05;
+
+    span {
+      display: block;
+      font-size: 2.742cqw;
+    }
+  }
+
+  // ========================================
+  // ПЕРВЫЙ СЛАЙД — ПЛАШКА «2 В 1»
+  // ========================================
+
+  .slide-01__badge {
+    display: inline-block;
+
+    margin-top: 1.13cqw;
+    padding: 0.48cqw 1.45cqw;
+
+    border-radius: 50px;
+    background-color: vars.$color-white;
+
+    color: #454545;
+    font-size: 2.419cqw;
+    font-weight: 700;
+    line-height: 1.1;
+
+    box-shadow:
+      0 0.65cqw 1.61cqw rgb(0 0 0 / 15%);
+  }
+
+  // ========================================
+  // ПЕРВЫЙ СЛАЙД — ЦЕНТРАЛЬНОЕ ИЗОБРАЖЕНИЕ
+  // ========================================
+
+  .slide-01__main-image {
+    position: absolute;
+    z-index: 2;
+
+    left: 50%;
+    bottom: 0;
+
+    display: block;
+
+    // Исходная ширина: 674 px из 1240 px.
+
+    width: 54.355%;
+
+    transform: translateX(-50%);
+
+    img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+  }
+
+  // ========================================
+  // ПЕРВЫЙ СЛАЙД — КОНТЕЙНЕР КАРТОЧЕК
+  // ========================================
+
+  .slide-01__cards {
+    position: absolute;
+    z-index: 3;
+    inset: 0;
+
+    pointer-events: none;
+  }
+
+  // ========================================
+  // ПЕРВЫЙ СЛАЙД — КАРТОЧКИ
+  // ========================================
+
+  .slide-01__card {
+    position: absolute;
+
+    // Высота и ширина относительно композиции.
+
+    bottom: 5.25%;
+    width: 19.597%;
+    height: 63.375%;
+
+    pointer-events: auto;
+
+    &:first-child {
+      left: 4.194%;
+    }
+
+    &:last-child {
+      right: 4.194%;
+    }
+
+    img {
+      display: block;
+
+      width: 100%;
+      height: 100%;
+
+      object-fit: cover;
+
+      border-radius: 2.58cqw;
+
+      box-shadow:
+        0 0.65cqw 1.45cqw rgb(0 0 0 / 12%);
+    }
+  }
+
+  // ========================================
+  // ПЕРВЫЙ СЛАЙД — ПОДПИСИ КАРТОЧЕК
+  // ========================================
+
+  .slide-01__card-label {
+    position: absolute;
+    z-index: 4;
+
+    top: -3.63cqw;
+    left: 50%;
+
+    padding: 0.65cqw 1.61cqw;
+
+    transform: translateX(-50%);
+
+    border-radius: 30px;
+
+    background-color: vars.$color-white;
+    color: #454545;
+
+    font-size: 1.774cqw;
+    font-weight: 600;
+    white-space: nowrap;
+
+    box-shadow:
+      0 0.4cqw 0.97cqw rgb(0 0 0 / 15%);
+  }
+
+  // Тёмная подпись левой карточки.
+
+  .slide-01__card:first-child .slide-01__card-label {
+    background-color: #454545;
+    color: vars.$color-white;
+  }
+}

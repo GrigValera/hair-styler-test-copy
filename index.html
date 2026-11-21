@@ -7,14 +7,75 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0"
     />
+    <meta
+      name="description"
+      content="YAMAGUCHI Hair Styler — фен и стайлер 2 в 1"
+    />
     <title>YAMAGUCHI Hair Styler</title>
   </head>
 
   <body>
-    <main>
-      <h1 class="test-title">
-        YAMAGUCHI Hair Styler
-      </h1>
+    <main class="presentation">
+
+      <!-- Слайд 1 -->
+      <section class="slide slide--01" id="slide-01">
+
+        <div class="slide__content">
+
+          <div class="slide-01__composition">
+
+            <!-- Заголовок -->
+            <header class="slide-01__header">
+              <h1 class="slide-01__title">
+                ФЕН И СТАЙЛЕР
+                <span>в уникальном дизайне</span>
+              </h1>
+              <span class="slide-01__badge">2 в 1</span>
+            </header>
+
+            <!-- Центральное изображение -->
+            <picture class="slide-01__main-image">
+              <source
+                media="(max-width: 767px)"
+                srcset="/images/slide-01/slide-01-main-mobile.png"
+              />
+              <img
+                src="/images/slide-01-main.png"
+                alt="Фен и стайлер YAMAGUCHI"
+              />
+            </picture>
+
+            <!-- Карточки -->
+            <div class="slide-01__cards">
+
+              <article class="slide-01__card">
+                <span class="slide-01__card-label">
+                  Фен
+                </span>
+                <img
+                  src="/images/slide-01-hairdryer.png"
+                  alt="Укладка волос феном"
+                />
+              </article>
+
+              <article class="slide-01__card">
+                <span class="slide-01__card-label">
+                  Стайлер
+                </span>
+                <img
+                  src="/images/slide-01-styler.png"
+                  alt="Укладка волос стайлером"
+                />
+              </article>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
     </main>
 
     <script type="module" src="/src/main.js"></script>

@@ -22,3 +22,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Licensed trial font files (local use only)
+public/fonts/EuclidCircularATRIAL-*.woff2
