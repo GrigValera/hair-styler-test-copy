@@ -15,100 +15,139 @@ export function initSlides() {
     '(prefers-reduced-motion: reduce)'
   );
 
-  // Продолжительность анимации соответствует CSS.
+  // Общие параметры анимации.
+  // Используются слайдами и колесом.
 
-  const animationDuration = 600;
+  const animationDuration = 850;
+  const animationEasing = 'cubic-bezier(0.42, 0, 0.58, 1)';
 
-  // Минимальное накопленное движение скролла.
+  document.documentElement.style.setProperty(
+    '--slide-duration',
+    `${animationDuration}ms`
+  );
+
+  document.documentElement.style.setProperty(
+    '--slide-easing',
+    animationEasing
+  );
+
+  // Параметры обработки прокрутки.
 
   const wheelThreshold = 35;
-
-  // Интервал завершения жеста прокрутки.
-
   const wheelIdleDelay = 180;
 
   let currentIndex = 0;
-
-  let animationTimer = null;
-  let wheelTimer = null;
 
   let isAnimating = false;
   let wheelLocked = false;
 
   let wheelDelta = 0;
+  let wheelTimer = null;
+
+  let transitionId = 0;
+
+  // Храним активные анимации,
+  // чтобы корректно отменять их при смене режима.
+
+  let activeAnimations = [];
 
   // ======================================
-  // ПРОВЕРКА РЕЖИМА ОТОБРАЖЕНИЯ
+  // ПОЛУЧЕНИЕ ТЕКУЩЕГО СОСТОЯНИЯ
   // ======================================
 
   function isDesktop() {
     return desktopMedia.matches;
   }
 
+  function getCurrentIndex() {
+    return currentIndex;
+  }
+
+  function getDuration() {
+    return reducedMotionMedia.matches
+      ? 0
+      : animationDuration;
+  }
+
+  // ======================================
+  // ПОЛУЧЕНИЕ КОМПОЗИЦИИ СЛАЙДА
+  // ======================================
+
+  function getComposition(slide) {
+    return slide?.querySelector(
+      '.slide-01__composition, ' +
+      '.slide-02__composition, ' +
+      '.slide-03__composition'
+    );
+  }
+
+  // ======================================
+  // ОТМЕНА ТЕКУЩИХ АНИМАЦИЙ
+  // ======================================
+
+  function cancelAnimations() {
+    transitionId += 1;
+
+    activeAnimations.forEach((animation) => {
+      animation.cancel();
+    });
+
+    activeAnimations = [];
+
+    isAnimating = false;
+  }
+
   // ======================================
   // ОБНОВЛЕНИЕ ВИДИМОСТИ СЛАЙДОВ
   // ======================================
 
-  function render(
-    animate = false,
-    direction = 1
-  ) {
-    window.clearTimeout(animationTimer);
-
-    const shouldAnimate =
-      isDesktop() &&
-      animate &&
-      !reducedMotionMedia.matches;
-
-    isAnimating = shouldAnimate;
+  function render() {
+    const desktop = isDesktop();
 
     slides.forEach((slide, index) => {
-      const isActive = index === currentIndex;
+      const active = index === currentIndex;
 
       slide.classList.remove(
         'is-entering',
-        'is-forward',
-        'is-backward'
+        'is-leaving'
       );
-
-      // На десктопе отображаем текущий слайд.
-      // На мобильных сохраняем обычный поток.
-
-      slide.hidden = isDesktop() && !isActive;
 
       slide.classList.toggle(
         'is-active',
-        isActive
+        active
       );
 
-      if (isActive && shouldAnimate) {
-        slide.classList.add(
-          'is-entering',
-          direction > 0
-            ? 'is-forward'
-            : 'is-backward'
-        );
-      }
+      // На мобильных устройствах
+      // сохраняем обычный поток документа.
+
+      slide.hidden = desktop && !active;
+
+      slide.inert = desktop && !active;
     });
-
-    // Снимаем блокировку после завершения
-    // анимации текущего слайда.
-
-    if (shouldAnimate) {
-      animationTimer = window.setTimeout(() => {
-        slides[currentIndex]?.classList.remove(
-          'is-entering',
-          'is-forward',
-          'is-backward'
-        );
-
-        isAnimating = false;
-      }, animationDuration);
-    }
   }
 
   // ======================================
-  // ПЕРЕХОД К ВЫБРАННОМУ СЛАЙДУ
+  // УВЕДОМЛЕНИЕ БОКОВОГО КОЛЕСА
+  // ======================================
+
+  function notifyWheel(
+    previousIndex,
+    duration
+  ) {
+    document.dispatchEvent(
+      new CustomEvent('slide:change', {
+        detail: {
+          previousIndex,
+          index: currentIndex,
+          duration,
+          easing: animationEasing
+        }
+      })
+    );
+  }
+
+  // ======================================
+  // ПЕРЕКЛЮЧЕНИЕ СЛАЙДОВ
   // ======================================
 
   function goTo(index, moveFocus = false) {
@@ -125,37 +164,169 @@ export function initSlides() {
       return false;
     }
 
+    const previousIndex = currentIndex;
+
+    const previousSlide = slides[previousIndex];
+    const nextSlide = slides[index];
+
+    const previousComposition =
+      getComposition(previousSlide);
+
+    const nextComposition =
+      getComposition(nextSlide);
+
     const direction =
-      index > currentIndex ? 1 : -1;
+      index > previousIndex ? 1 : -1;
+
+    const duration = getDuration();
 
     currentIndex = index;
 
-    render(true, direction);
+    // Если анимации отключены,
+    // переключаем слайд без движения.
 
-    // Переносим фокус после перехода
-    // по кнопке или клавиатуре.
+    if (
+      duration === 0 ||
+      !previousComposition ||
+      !nextComposition
+    ) {
+      render();
 
-    if (moveFocus) {
-      slides[currentIndex]
-        ?.querySelector('[aria-current="step"]')
-        ?.focus({
-          preventScroll: true
-        });
+      notifyWheel(previousIndex, 0);
+
+      if (moveFocus) {
+        focusCurrentButton();
+      }
+
+      return true;
     }
 
-    // Передаём информацию о смене слайда.
-    // Это событие будет использовать колесо.
+    isAnimating = true;
 
-    document.dispatchEvent(
-      new CustomEvent('slide:change', {
-        detail: {
-          index: currentIndex,
-          direction
-        }
-      })
+    const currentTransition = ++transitionId;
+
+    // Оставляем предыдущий слайд видимым,
+    // пока он не завершит движение.
+
+    previousSlide.hidden = false;
+    previousSlide.inert = true;
+
+    previousSlide.classList.remove('is-active');
+    previousSlide.classList.add('is-leaving');
+
+    // Показываем следующую композицию.
+
+    nextSlide.hidden = false;
+    nextSlide.inert = true;
+
+    nextSlide.classList.add(
+      'is-active',
+      'is-entering'
     );
 
+    // Вычисляем расстояние перемещения
+    // относительно высоты области просмотра.
+
+    const transitionDistance =
+      document.documentElement.clientHeight;
+
+    const startOffset =
+      transitionDistance * direction;
+
+    const endOffset = -startOffset;
+
+    const animationOptions = {
+      duration,
+      easing: animationEasing,
+      fill: 'both'
+    };
+
+    // Уходящая композиция плавно
+    // покидает область просмотра.
+
+    const leaveAnimation =
+      previousComposition.animate(
+        [
+          {
+            transform: 'translateY(0)'
+          },
+          {
+            transform: `translateY(${endOffset}px)`
+          }
+        ],
+        animationOptions
+      );
+
+    // Новая композиция одновременно
+    // перемещается в центр экрана.
+
+    const enterAnimation =
+      nextComposition.animate(
+        [
+          {
+            transform: `translateY(${startOffset}px)`
+          },
+          {
+            transform: 'translateY(0)'
+          }
+        ],
+        animationOptions
+      );
+
+    activeAnimations = [
+      leaveAnimation,
+      enterAnimation
+    ];
+
+    // Одновременно запускаем перемещение
+    // иконок навигационного колеса.
+
+    notifyWheel(previousIndex, duration);
+
+    // Ожидаем завершения обеих анимаций.
+
+    Promise.allSettled(
+      activeAnimations.map(
+        (animation) => animation.finished
+      )
+    ).then(() => {
+      // Игнорируем отменённые переходы.
+
+      if (currentTransition !== transitionId) {
+        return;
+      }
+
+      // Сначала скрываем уходящий слайд,
+      // затем очищаем временные анимации.
+
+      render();
+
+      activeAnimations.forEach((animation) => {
+        animation.cancel();
+      });
+
+      activeAnimations = [];
+
+      isAnimating = false;
+
+      if (moveFocus) {
+        focusCurrentButton();
+      }
+    });
+
     return true;
+  }
+
+  // ======================================
+  // УПРАВЛЕНИЕ ФОКУСОМ
+  // ======================================
+
+  function focusCurrentButton() {
+    document.querySelector(
+      '.wheel__button[aria-current="step"]'
+    )?.focus({
+      preventScroll: true
+    });
   }
 
   // ======================================
@@ -170,25 +341,16 @@ export function initSlides() {
     return goTo(currentIndex - 1);
   }
 
-  function getCurrentIndex() {
-    return currentIndex;
-  }
-
   // ======================================
-  // НОРМАЛИЗАЦИЯ СКРОЛЛА
+  // НОРМАЛИЗАЦИЯ ПРОКРУТКИ
   // ======================================
 
   function normalizeWheelDelta(event) {
     let delta = event.deltaY;
 
-    // Некоторые устройства передают
-    // движение в строках, а не пикселях.
-
     if (event.deltaMode === 1) {
       delta *= 16;
     }
-
-    // Обрабатываем прокрутку целыми страницами.
 
     if (event.deltaMode === 2) {
       delta *= window.innerHeight;
@@ -202,48 +364,22 @@ export function initSlides() {
   // ======================================
 
   function handleWheel(event) {
-    // На мобильных устройствах
-    // не перехватываем прокрутку.
-
     if (!isDesktop() || slides.length < 2) {
       return;
     }
 
-    // Не блокируем масштабирование браузера
-    // и жесты масштабирования тачпадом.
+    // Не перехватываем масштабирование браузера.
 
     if (event.ctrlKey || event.metaKey) {
       return;
     }
 
-    // Игнорируем горизонтальные жесты.
+    // Игнорируем горизонтальную прокрутку.
 
     if (
       Math.abs(event.deltaX) >
       Math.abs(event.deltaY)
     ) {
-      return;
-    }
-
-    event.preventDefault();
-
-    window.clearTimeout(wheelTimer);
-
-    // Ожидаем завершения текущего жеста,
-    // включая инерционную прокрутку тачпада.
-
-    wheelTimer = window.setTimeout(() => {
-      wheelLocked = false;
-      wheelDelta = 0;
-    }, wheelIdleDelay);
-
-    // Не переключаем несколько слайдов
-    // за один непрерывный жест.
-
-    if (wheelLocked || isAnimating) {
-      wheelLocked = true;
-      wheelDelta = 0;
-
       return;
     }
 
@@ -253,7 +389,31 @@ export function initSlides() {
       return;
     }
 
-    // При изменении направления
+    if (event.cancelable) {
+      event.preventDefault();
+    }
+
+    window.clearTimeout(wheelTimer);
+
+    // Определяем завершение жеста,
+    // включая инерционную прокрутку тачпада.
+
+    wheelTimer = window.setTimeout(() => {
+      wheelLocked = false;
+      wheelDelta = 0;
+    }, wheelIdleDelay);
+
+    // Блокируем повторные переключения
+    // во время текущего движения.
+
+    if (wheelLocked || isAnimating) {
+      wheelLocked = true;
+      wheelDelta = 0;
+
+      return;
+    }
+
+    // При смене направления
     // начинаем накопление заново.
 
     if (
@@ -264,8 +424,6 @@ export function initSlides() {
     }
 
     wheelDelta += delta;
-
-    // Отсекаем слишком слабые движения.
 
     if (Math.abs(wheelDelta) < wheelThreshold) {
       return;
@@ -303,9 +461,6 @@ export function initSlides() {
 
     const target = event.target;
 
-    // Не перехватываем клавиши
-    // внутри элементов ввода.
-
     if (
       target instanceof HTMLElement &&
       target.closest(
@@ -315,56 +470,53 @@ export function initSlides() {
       return;
     }
 
-    if (
-      event.key === 'ArrowDown' ||
-      event.key === 'ArrowRight' ||
-      event.key === 'PageDown'
-    ) {
-      event.preventDefault();
+    let targetIndex = null;
 
-      goTo(currentIndex + 1, true);
+    switch (event.key) {
+      case 'ArrowDown':
+      case 'ArrowRight':
+      case 'PageDown':
+        targetIndex = currentIndex + 1;
+        break;
+
+      case 'ArrowUp':
+      case 'ArrowLeft':
+      case 'PageUp':
+        targetIndex = currentIndex - 1;
+        break;
+
+      case 'Home':
+        targetIndex = 0;
+        break;
+
+      case 'End':
+        targetIndex = slides.length - 1;
+        break;
+
+      default:
+        return;
     }
 
-    if (
-      event.key === 'ArrowUp' ||
-      event.key === 'ArrowLeft' ||
-      event.key === 'PageUp'
-    ) {
-      event.preventDefault();
+    event.preventDefault();
 
-      goTo(currentIndex - 1, true);
-    }
-
-    // Переход к первому слайду.
-
-    if (event.key === 'Home') {
-      event.preventDefault();
-
-      goTo(0, true);
-    }
-
-    // Переход к последнему слайду.
-
-    if (event.key === 'End') {
-      event.preventDefault();
-
-      goTo(slides.length - 1, true);
-    }
+    goTo(targetIndex, true);
   }
 
   // ======================================
-  // ИЗМЕНЕНИЕ РАЗМЕРА ОКНА
+  // СМЕНА РЕЖИМА ОТОБРАЖЕНИЯ
   // ======================================
 
   function handleResize() {
-    window.clearTimeout(animationTimer);
+    cancelAnimations();
+
     window.clearTimeout(wheelTimer);
 
-    isAnimating = false;
     wheelLocked = false;
     wheelDelta = 0;
 
     render();
+
+    notifyWheel(currentIndex, 0);
 
     if (isDesktop()) {
       window.scrollTo(0, 0);
@@ -376,6 +528,11 @@ export function initSlides() {
   // ======================================
 
   desktopMedia.addEventListener(
+    'change',
+    handleResize
+  );
+
+  reducedMotionMedia.addEventListener(
     'change',
     handleResize
   );
@@ -393,13 +550,12 @@ export function initSlides() {
     }
   );
 
-  // При первоначальной загрузке
-  // отображаем первый слайд.
+  // Первоначальное состояние презентации.
 
   render();
 
   // Предоставляем методы управления
-  // модулю боковой навигации.
+  // модулю бокового колеса.
 
   return {
     goTo,

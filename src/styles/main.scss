@@ -4,7 +4,17 @@
 @use './desktop';
 @use './slide-02';
 @use './slide-03';
+@use './wheel';
 @use './mobile';
+
+// ========================================
+// ОБЩИЕ ПАРАМЕТРЫ АНИМАЦИЙ
+// ========================================
+
+:root {
+  --slide-duration: 850ms;
+  --slide-easing: cubic-bezier(0.42, 0, 0.58, 1);
+}
 
 // ========================================
 // ОБЩИЕ СТИЛИ
@@ -30,7 +40,7 @@ button {
 }
 
 // ========================================
-// УПРАВЛЕНИЕ ВИДИМОСТЬЮ СЛАЙДОВ
+// ДЕСКТОПНЫЙ РЕЖИМ
 // ========================================
 
 @media (min-width: 768px) {
@@ -40,62 +50,33 @@ button {
     overflow: hidden;
   }
 
+  // Скрываем неактивные слайды
+  // только после завершения анимации.
+
   .slide[hidden] {
     display: none;
   }
 
-  // Появление следующего слайда снизу.
+  .slide {
+    z-index: 0;
 
-  .slide.is-entering.is-forward {
-
-    .slide-01__composition,
-    .slide-02__composition,
-    .slide-03__composition {
-      animation: slide-enter-bottom 600ms
-        cubic-bezier(0.22, 1, 0.36, 1) both;
-    }
+    pointer-events: none;
   }
 
-  // Появление предыдущего слайда сверху.
+  .slide.is-active {
+    z-index: 2;
 
-  .slide.is-entering.is-backward {
-
-    .slide-01__composition,
-    .slide-02__composition,
-    .slide-03__composition {
-      animation: slide-enter-top 600ms
-        cubic-bezier(0.22, 1, 0.36, 1) both;
-    }
-  }
-}
-
-// ========================================
-// АНИМАЦИИ ПЕРЕКЛЮЧЕНИЯ СЛАЙДОВ
-// ========================================
-
-@keyframes slide-enter-bottom {
-
-  from {
-    transform: translateY(100vh);
-    opacity: 0;
+    pointer-events: auto;
   }
 
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
+  .slide.is-leaving {
+    z-index: 1;
 
-@keyframes slide-enter-top {
-
-  from {
-    transform: translateY(-100vh);
-    opacity: 0;
+    pointer-events: none;
   }
 
-  to {
-    transform: translateY(0);
-    opacity: 1;
+  .slide.is-entering {
+    pointer-events: none;
   }
 }
 
@@ -118,17 +99,7 @@ button {
 
 @media (prefers-reduced-motion: reduce) {
 
-  .slide.is-entering.is-forward,
-  .slide.is-entering.is-backward {
-
-    .slide-01__composition,
-    .slide-02__composition,
-    .slide-03__composition {
-      animation: none;
-    }
-  }
-
-  .slide-01__wheel-button {
-    transition: none;
+  :root {
+    --slide-duration: 0ms;
   }
 }
