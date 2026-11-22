@@ -19,14 +19,14 @@ def load_images(figma: Path, browser: Path, frame: str) -> tuple[Image.Image, Im
 
     if frame.startswith("mobile"):
         index = int(frame[-1]) - 1
-        page = Image.open(browser / "mobile-320.png").convert("RGB")
+        page = Image.open(browser / "mobile" / "mobile-320.png").convert("RGB")
         start = sum(MOBILE_HEIGHTS[:index])
         image = page.crop((0, start, 320, start + MOBILE_HEIGHTS[index]))
         expected = (320, MOBILE_HEIGHTS[index])
     else:
         # На размере 1920 × 1080 центральная сцена 1240 × 800.
         # Положение сцены вычисляется по её центру, без статичных координат.
-        viewport = Image.open(browser / f"slide-{frame[-1]}-1920.png").convert("RGB")
+        viewport = Image.open(browser / "desktop" / f"slide-{frame[-1]}-1920.png").convert("RGB")
         left = (viewport.width - 1240) // 2
         top = (viewport.height - 800) // 2
         image = viewport.crop((left, top, left + 1240, top + 800))
@@ -43,15 +43,14 @@ def load_images(figma: Path, browser: Path, frame: str) -> tuple[Image.Image, Im
 def compare(ref: Image.Image, actual: Image.Image, tolerance: int) -> dict:
     difference = ImageChops.difference(ref, actual)
     channels = difference.split()
-    extrema = Image.merge("RGB", channels).convert("RGB")
-    hist = extrema.histogram()
-    changed = 0
     pixels = ref.width * ref.height
-    # Граница по максимальному отклонению одного из каналов.
-    for y in range(ref.height):
-        for r, g, b in list(extrema.crop((0, y, ref.width, y + 1)).getdata()):
-            if max(r, g, b) > tolerance:
-                changed += 1
+    # Каждый ненулевой пиксель маски превышает заданный порог.
+    # Для точного сравнения берём максимум из трёх каналов.
+    maximum = ImageChops.lighter(
+        ImageChops.lighter(channels[0], channels[1]), channels[2]
+    )
+    mask = maximum.point(lambda value: 255 if value > tolerance else 0)
+    changed = mask.histogram()[255]
     averages = ImageStat.Stat(difference).mean
 
     return {
@@ -89,6 +88,15 @@ def main() -> None:
         Image.blend(reference, actual, 0.5).save(
             args.output / f"{frame}-overlay.png"
         )
+
+        # Тройная панель помогает находить расхождения без масштабирования.
+        panel = Image.new(
+            "RGB", (reference.width * 3, reference.height), "#ffffff"
+        )
+        panel.paste(reference, (0, 0))
+        panel.paste(actual, (reference.width, 0))
+        panel.paste(difference, (reference.width * 2, 0))
+        panel.save(args.output / f"{frame}-comparison.png")
 
         report.append({
             "slide": frame,
