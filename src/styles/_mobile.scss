@@ -83,7 +83,6 @@ $color-second-slide: #746d68;
 
 .slide-02__mobile-feature,
 .slide-02__mobile-title,
-.slide-02__mobile-break,
 .slide-03__mobile-feature,
 .slide-03__mobile-title,
 .slide-03__mobile-break {
@@ -906,6 +905,14 @@ $color-second-slide: #746d68;
   // ОПИСАНИЕ ВТОРОГО СЛАЙДА
   // ======================================
 
+  .slide-02__description--desktop {
+    display: none;
+  }
+
+  .slide-02__description--mobile {
+    display: block;
+  }
+
   .slide-02__description {
     position: absolute;
     z-index: 4;
@@ -935,14 +942,6 @@ $color-second-slide: #746d68;
 
     transform: translateX(-50%);
 
-    // Переносы различаются в двух версиях макета.
-    .slide-02__desktop-break {
-      display: none;
-    }
-
-    .slide-02__mobile-break {
-      display: inline;
-    }
   }
 
   // ======================================

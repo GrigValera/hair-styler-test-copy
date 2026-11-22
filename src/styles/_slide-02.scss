@@ -204,6 +204,10 @@ $composition-height: 800;
   // ТЕКСТ ОПИСАНИЯ
   // ======================================
 
+  .slide-02__description--mobile {
+    display: none;
+  }
+
   .slide-02__description {
     position: absolute;
     z-index: 3;
