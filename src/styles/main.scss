@@ -84,7 +84,7 @@ button {
 // МОБИЛЬНЫЙ РЕЖИМ
 // ========================================
 
-@media (max-width: 767px) {
+@media (width < 768px) {
 
   html,
   body {

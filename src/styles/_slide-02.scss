@@ -268,7 +268,7 @@ $composition-height: 800;
 // Мобильную композицию второго слайда
 // реализуем отдельно по мобильному макету.
 
-@media (max-width: 767px) {
+@media (width < 768px) {
   .slide--02 {
     display: none;
   }

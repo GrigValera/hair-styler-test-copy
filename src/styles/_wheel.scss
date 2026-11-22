@@ -468,7 +468,7 @@ $active-size: 103;
 // МОБИЛЬНАЯ ВЕРСИЯ
 // ========================================
 
-@media (max-width: 767px) {
+@media (width < 768px) {
 
   .wheel-layout {
     display: none;

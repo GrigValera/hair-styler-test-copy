@@ -212,7 +212,7 @@ $composition-height: 800;
 // ВРЕМЕННОЕ ОГРАНИЧЕНИЕ МОБИЛЬНОЙ ВЕРСИИ
 // ========================================
 
-@media (max-width: 767px) {
+@media (width < 768px) {
   .slide--03 {
     display: none;
   }

@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html lang="ru">
   <head>
@@ -44,8 +45,8 @@
               <!-- Центральная иллюстрация -->
               <picture class="slide-01__main-image">
                 <source
-                  media="(max-width: 767px)"
-                  srcset="/images/slide-01/slide-01-main-mobile.png"
+                  media="(width < 768px)"
+                  srcset="/images/slide-01/slide-01-background-mobile.png"
                 />
 
                 <img
@@ -95,6 +96,24 @@
           <div class="slide-01__stage slide-02__stage">
             <div class="slide-02__composition">
 
+              <!-- Мобильная информационная плашка -->
+              <div class="slide-02__mobile-feature">
+                <span
+                  class="slide-02__mobile-feature-icon"
+                  aria-hidden="true"
+                >
+                  <span></span>
+                </span>
+
+                <span class="slide-02__mobile-feature-text">
+                  ЛЁГКОСТЬ
+                  <br />
+                  И КОМФОРТ
+                  <br />
+                  В РУКЕ
+                </span>
+              </div>
+
               <!-- Декоративное фоновое свечение -->
               <span
                 class="slide-02__glow"
@@ -104,7 +123,7 @@
               <!-- Изображение модели -->
               <picture class="slide-02__model">
                 <source
-                  media="(max-width: 767px)"
+                  media="(width < 768px)"
                   srcset="/images/slide-02/slide-02-model-mobile.png"
                 />
 
@@ -124,10 +143,15 @@
                 </span>
               </div>
 
-              <!-- Заголовок -->
+              <!-- Десктопный заголовок -->
               <h2 class="slide-02__title">
                 СУПЕР-
                 <span>ЛЁГКИЙ</span>
+              </h2>
+
+              <!-- Мобильный заголовок -->
+              <h2 class="slide-02__mobile-title">
+                СУПЕРЛЁГКИЙ
               </h2>
 
               <!-- Описание -->
@@ -164,7 +188,7 @@
               <!-- Изображение двигателя -->
               <picture class="slide-03__technology">
                 <source
-                  media="(max-width: 767px)"
+                  media="(width < 768px)"
                   srcset="/images/slide-03/slide-03-technology-mobile.png"
                 />
 
