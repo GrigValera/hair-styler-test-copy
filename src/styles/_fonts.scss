@@ -6,3 +6,29 @@
   font-weight: 100 900;
   font-display: swap;
 }
+
+// Дополнительный локально установленный шрифт макета.
+// Коммерческие файлы не включаются в публичную сборку.
+@font-face {
+  font-family: 'Euclid Circular A';
+  src: local('Euclid Circular A'), local('EuclidCircularA-Regular');
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Euclid Circular A';
+  src: local('Euclid Circular A SemiBold'), local('EuclidCircularA-SemiBold');
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Euclid Circular A';
+  src: local('Euclid Circular A Bold'), local('EuclidCircularA-Bold');
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+}
