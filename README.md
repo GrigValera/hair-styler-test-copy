@@ -9,7 +9,7 @@
 - JavaScript без сторонних UI-фреймворков
 - Vite для локальной разработки и сборки
 - Web Animations API для анимации переходов
-- Playwright и Chromium для проверок в браузере
+- Playwright: Chromium, Firefox и WebKit для проверок в браузере
 
 ## Запуск
 
@@ -54,7 +54,13 @@ src/
     _desktop.scss          Общая десктопная композиция
     _slide-02.scss         Второй десктопный слайд
     _slide-03.scss         Третий десктопный слайд
-    _mobile.scss           Мобильные композиции
+    _mobile.scss           Подключение мобильных стилей
+    mobile/
+      _config.scss         Размеры и функция адаптации
+      _base.scss           Общая мобильная структура
+      _slide-01.scss       Первый мобильный слайд
+      _slide-02.scss       Второй мобильный слайд
+      _slide-03.scss       Третий мобильный слайд
     _wheel.scss            Навигационное колесо
     _functions.scss        Общие функции SCSS
     _variables.scss        Общие шрифты и цвета
@@ -64,6 +70,10 @@ src/
 tests/
   mobile-layout.mjs        Проверка мобильных разрешений
   desktop-layout.mjs       Проверка десктопа и управления
+  cross-browser.mjs       Проверка Firefox и WebKit
+  test_pixel_comparison.py Проверка алгоритма сравнения
+tools/
+  compare-figma.py        Попиксельная сверка с Figma
 index.html                 Разметка трёх слайдов
 ```
 
@@ -83,6 +93,7 @@ index.html                 Разметка трёх слайдов
 - Переключение между мобильным и десктопным режимами.
 - Работа с настройкой `prefers-reduced-motion`.
 - Отсутствие ошибок JavaScript в консоли.
+- Стабильность ключевых сценариев в Chromium, Firefox и WebKit.
 
 Скриншоты сохраняются как артефакты GitHub Actions.
 
@@ -91,10 +102,13 @@ index.html                 Разметка трёх слайдов
 ```bash
 npm ci
 npm install --no-save --package-lock=false playwright@1.56.1
-npx playwright install chromium
+npx playwright install chromium firefox webkit
 npm run build
 node tests/mobile-layout.mjs
 node tests/desktop-layout.mjs
+node tests/cross-browser.mjs
+python -m pip install Pillow
+python tests/test_pixel_comparison.py
 ```
 
 ## Макет
@@ -109,7 +123,7 @@ node tests/desktop-layout.mjs
 
 Оригинальный макет использует Euclid Circular A преимущественно в начертании SemiBold. Это коммерческий шрифт: файлы Euclid не включены в публичный репозиторий. Для точного воспроизведения его метрик требуется отдельно лицензированная версия с поддержкой кириллицы и соответствующими весами; пробный или локальный файл Regular не заменяет SemiBold.
 
-Графика подготовлена для страницы презентации. Крупное изображение модели второго слайда оптимизировано по размеру и хранится в WebP с прозрачностью.
+Графика подготовлена для страницы презентации. Крупное изображение модели второго слайда оптимизировано по размеру и хранится в WebP с прозрачностью. Мобильные изображения сжаты в WebP без потери видимых пикселей.
 
 ## Проверка совпадения с Figma
 

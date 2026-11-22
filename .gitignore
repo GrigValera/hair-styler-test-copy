@@ -24,9 +24,7 @@ dist-ssr
 *.sw?
 
 # Коммерческие файлы шрифта остаются только на локальном компьютере.
-public/fonts/[Ee]uclid*
-public/fonts/[Ee][Uu]CLID*
-public/fonts/[Ee][Uu]clid*
+public/fonts/[Ee][Uu][Cc][Ll][Ii][Dd]*
 
 # Результаты автоматических браузерных проверок
 test-results/
