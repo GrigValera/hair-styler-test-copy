@@ -1,0 +1,77 @@
+name: Compress mobile imagery
+
+on:
+  push:
+    paths:
+      - .github/workflows/compress-mobile-imagery.yml
+
+permissions:
+  contents: write
+
+jobs:
+  compress:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install Pillow==11.3.0
+      - name: Сжатие мобильной графики без потери качества
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          from PIL import Image
+
+          assets = [
+              "public/images/slide-01/slide-01-background-mobile.png",
+              "public/images/slide-02/slide-02-model-mobile.png",
+              "public/images/slide-03/slide-03-technology-mobile.png",
+          ]
+          files = [Path("index.html"), Path("tests/mobile-layout.mjs")]
+
+          for source_name in assets:
+              source = Path(source_name)
+              target = source.with_suffix(".webp")
+
+              with Image.open(source) as source_image:
+                  original = source_image.convert("RGBA")
+                  original.save(target, format="WEBP", lossless=True, method=6)
+
+              # Прозрачные пиксели могут иметь другие скрытые RGB,
+              # поэтому сравниваем видимую композицию на фоне.
+              with Image.open(target) as webp_image:
+                  converted = webp_image.convert("RGBA")
+                  if original.size != converted.size:
+                      raise ValueError(f"Некорректный размер: {source}")
+                  if original.getchannel("A").tobytes() != converted.getchannel("A").tobytes():
+                      raise ValueError(f"Изменена прозрачность: {source}")
+
+                  background = Image.new("RGBA", original.size, "#746d68")
+                  original_view = Image.alpha_composite(background, original)
+                  converted_view = Image.alpha_composite(background, converted)
+                  if original_view.tobytes() != converted_view.tobytes():
+                      raise ValueError(f"Изменились видимые пиксели: {source}")
+
+              before = "/" + source_name.removeprefix("public/")
+              after = "/" + str(target).removeprefix("public/")
+              count = 0
+              for document in files:
+                  text = document.read_text(encoding="utf-8")
+                  count += text.count(before)
+                  document.write_text(text.replace(before, after), encoding="utf-8")
+              if count < 2:
+                  raise RuntimeError(f"Отсутствуют ссылки на изображение: {before}")
+
+              print(f"{source.name}: {source.stat().st_size} -> "
+                    f"{target.stat().st_size} байт")
+              source.unlink()
+          PY
+      - name: Сохранение изображений
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A public/images/ index.html tests/mobile-layout.mjs
+          git commit -m "perf: losslessly compress mobile imagery"
+          git push origin HEAD:main
