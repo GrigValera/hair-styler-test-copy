@@ -26,10 +26,12 @@ jobs:
       - run: npx playwright install --with-deps chromium
       - name: Проверка мобильной вёрстки
         run: node tests/mobile-layout.mjs
+      - name: Проверка десктопной вёрстки
+        run: node tests/desktop-layout.mjs
       - name: Скриншоты проверки
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: mobile-layout-screenshots
-          path: test-results/mobile/
+          name: presentation-layout-screenshots
+          path: test-results/
           if-no-files-found: ignore
