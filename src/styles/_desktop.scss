@@ -1,5 +1,6 @@
 @use 'sass:math';
 @use './variables' as vars;
+@use './functions' as fn;
 
 // ========================================
 // ПАРАМЕТРЫ ИСХОДНОГО МАКЕТА
@@ -16,28 +17,6 @@ $photo-offset-y: 7;
 
 $color-composition: #a29c9a;
 $color-text-dark: #454545;
-
-// ========================================
-// ФУНКЦИИ АДАПТИВНЫХ РАЗМЕРОВ
-// ========================================
-
-// Размер относительно ширины контейнера.
-
-@function design($value) {
-  @return math.div($value, $composition-width) * 100cqw;
-}
-
-// Горизонтальные координаты композиции.
-
-@function horizontal($value) {
-  @return math.div($value, $composition-width) * 100%;
-}
-
-// Вертикальные координаты композиции.
-
-@function vertical($value) {
-  @return math.div($value, $composition-height) * 100%;
-}
 
 // ========================================
 // ДЕСКТОПНАЯ ВЁРСТКА
@@ -136,7 +115,7 @@ $color-text-dark: #454545;
     container-type: inline-size;
     isolation: isolate;
 
-    border-radius: design(70);
+    border-radius: fn.design(70);
 
     overflow: hidden;
 
@@ -160,7 +139,7 @@ $color-text-dark: #454545;
     position: absolute;
     z-index: 5;
 
-    top: vertical(55);
+    top: fn.vertical(55);
     left: 0;
 
     display: flex;
@@ -177,7 +156,7 @@ $color-text-dark: #454545;
 
     color: $color-text-dark;
 
-    font-size: design(42);
+    font-size: fn.design(42);
     font-weight: 700;
     line-height: 1.05;
 
@@ -196,27 +175,27 @@ $color-text-dark: #454545;
     align-items: center;
     justify-content: center;
 
-    min-width: design(160);
-    min-height: design(74);
+    min-width: fn.design(160);
+    min-height: fn.design(74);
 
-    margin-top: design(37);
-    padding: 0 design(20);
+    margin-top: fn.design(37);
+    padding: 0 fn.design(20);
 
     box-sizing: border-box;
 
-    border-radius: design(40);
+    border-radius: fn.design(40);
 
     background-color: vars.$color-white;
     color: $color-text-dark;
 
-    font-size: design(52);
+    font-size: fn.design(52);
     font-weight: 700;
     line-height: 1;
 
     white-space: nowrap;
 
     box-shadow:
-      0 design(8) design(20)
+      0 fn.design(8) fn.design(20)
       rgb(0 0 0 / 15%);
   }
 
@@ -229,11 +208,11 @@ $color-text-dark: #454545;
     z-index: 2;
 
     left: 50%;
-    bottom: vertical(-3);
+    bottom: fn.vertical(-3);
 
     display: block;
 
-    width: horizontal(674);
+    width: fn.horizontal(674);
 
     transform: translateX(-50%);
 
@@ -268,20 +247,20 @@ $color-text-dark: #454545;
     display: flex;
     flex-direction: column;
 
-    top: vertical(244);
+    top: fn.vertical(244);
 
-    width: horizontal($photo-width);
+    width: fn.horizontal($photo-width);
 
-    gap: design(20);
+    gap: fn.design(20);
 
     pointer-events: auto;
 
     &:first-child {
-      left: horizontal(52);
+      left: fn.horizontal(52);
     }
 
     &:last-child {
-      right: horizontal(
+      right: fn.horizontal(
         $composition-width - 945 - $photo-width
       );
     }
@@ -339,25 +318,25 @@ $color-text-dark: #454545;
 
     flex: 0 0 auto;
 
-    height: design(55.86);
+    height: fn.design(55.86);
 
-    padding: 0 design(27.87);
+    padding: 0 fn.design(27.87);
 
     box-sizing: border-box;
 
-    border-radius: design(33.58);
+    border-radius: fn.design(33.58);
 
     background-color: vars.$color-white;
     color: $color-text-dark;
 
-    font-size: design(28);
+    font-size: fn.design(28);
     font-weight: 600;
     line-height: 1;
 
     white-space: nowrap;
 
     box-shadow:
-      design(5) design(7) design(15)
+      fn.design(5) fn.design(7) fn.design(15)
       rgb(0 0 0 / 15%);
   }
 
@@ -378,7 +357,7 @@ $color-text-dark: #454545;
     .slide-01__card-label {
       align-self: flex-end;
 
-      width: design(172.74);
+      width: fn.design(172.74);
 
       padding: 0;
     }

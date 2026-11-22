@@ -1,29 +1,9 @@
-@use 'sass:math';
-@use 'sass:list';
 @use './variables' as vars;
+@use './functions' as fn;
 
 // ========================================
 // ПАРАМЕТРЫ ИСХОДНОГО МАКЕТА
 // ========================================
-
-$composition-width: 1240;
-$composition-height: 800;
-
-// ========================================
-// ФУНКЦИИ АДАПТИВНЫХ РАЗМЕРОВ
-// ========================================
-
-@function design($value) {
-  @return math.div($value, $composition-width) * 100cqw;
-}
-
-@function horizontal($value) {
-  @return math.div($value, $composition-width) * 100%;
-}
-
-@function vertical($value) {
-  @return math.div($value, $composition-height) * 100%;
-}
 
 // ========================================
 // ДЕСКТОПНАЯ ВЁРСТКА ВТОРОГО СЛАЙДА
@@ -45,7 +25,7 @@ $composition-height: 800;
 
     overflow: hidden;
 
-    border-radius: design(70);
+    border-radius: fn.design(70);
 
     background-color: vars.$color-card-bg;
   }
@@ -58,11 +38,11 @@ $composition-height: 800;
     position: absolute;
     z-index: 0;
 
-    left: horizontal(65);
-    top: vertical(16);
+    left: fn.horizontal(65);
+    top: fn.vertical(16);
 
-    width: horizontal(507);
-    height: vertical(505);
+    width: fn.horizontal(507);
+    height: fn.vertical(505);
 
     border-radius: 50%;
 
@@ -70,7 +50,7 @@ $composition-height: 800;
 
     opacity: 0.6;
 
-    filter: blur(design(167));
+    filter: blur(fn.design(167));
 
     pointer-events: none;
   }
@@ -83,13 +63,13 @@ $composition-height: 800;
     position: absolute;
     z-index: 2;
 
-    left: horizontal(128);
-    top: vertical(-38);
+    left: fn.horizontal(128);
+    top: fn.vertical(-38);
 
     display: block;
 
-    width: horizontal(668.73);
-    height: vertical(904);
+    width: fn.horizontal(668.73);
+    height: fn.vertical(904);
 
     img {
       display: block;
@@ -111,41 +91,20 @@ $composition-height: 800;
     position: absolute;
     z-index: 4;
 
-    left: horizontal(43);
-    top: vertical(35);
+    left: fn.horizontal(43);
+    top: fn.vertical(35);
 
     display: flex;
     align-items: center;
     justify-content: center;
 
-    width: design(180);
+    width: fn.design(180);
     aspect-ratio: 1;
 
     // Формируем пятнадцать лучей
     // по параметрам исходного макета.
 
-    $star-points: ();
-
-    @for $index from 0 through 29 {
-      $angle: -90deg + $index * 12deg;
-
-      $radius: 50%;
-
-      @if $index % 2 == 1 {
-        $radius: 44.1%;
-      }
-
-      $x: 50% + $radius * math.cos($angle);
-      $y: 50% + $radius * math.sin($angle);
-
-      $star-points: list.append(
-        $star-points,
-        #{$x} #{$y},
-        comma
-      );
-    }
-
-    clip-path: polygon($star-points);
+    clip-path: fn.star-polygon();
 
     background-color: #4b4b4b;
   }
@@ -156,7 +115,7 @@ $composition-height: 800;
     color: vars.$color-white;
 
     font-family: vars.$font-primary;
-    font-size: design(21.86);
+    font-size: fn.design(21.86);
     font-weight: 600;
 
     line-height: 1.13;
@@ -175,8 +134,8 @@ $composition-height: 800;
     position: absolute;
     z-index: 3;
 
-    left: horizontal(969);
-    top: vertical(272);
+    left: fn.horizontal(969);
+    top: fn.vertical(272);
 
     width: max-content;
 
@@ -185,7 +144,7 @@ $composition-height: 800;
     color: vars.$color-white;
 
     font-family: vars.$font-primary;
-    font-size: design(60.45);
+    font-size: fn.design(60.45);
     font-weight: 600;
 
     line-height: 1.01;
@@ -212,17 +171,17 @@ $composition-height: 800;
     position: absolute;
     z-index: 3;
 
-    left: horizontal(797);
-    top: vertical(428);
+    left: fn.horizontal(797);
+    top: fn.vertical(428);
 
-    width: horizontal(344);
+    width: fn.horizontal(344);
 
     margin: 0;
 
     color: vars.$color-white;
 
     font-family: vars.$font-secondary;
-    font-size: design(15);
+    font-size: fn.design(15);
     font-weight: 500;
 
     line-height: 1.675;
@@ -239,25 +198,25 @@ $composition-height: 800;
     position: absolute;
     z-index: 3;
 
-    left: horizontal(906);
-    top: vertical(567);
+    left: fn.horizontal(906);
+    top: fn.vertical(567);
 
     display: flex;
     align-items: center;
     justify-content: center;
 
-    width: design(126);
-    height: design(55);
+    width: fn.design(126);
+    height: fn.design(55);
 
     box-sizing: border-box;
 
-    border-radius: design(60);
+    border-radius: fn.design(60);
 
     background-color: vars.$color-white;
     color: #4b4b4b;
 
     font-family: vars.$font-primary;
-    font-size: design(28);
+    font-size: fn.design(28);
     font-weight: 700;
     line-height: 1;
 

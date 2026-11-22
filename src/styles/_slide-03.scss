@@ -1,29 +1,9 @@
-@use 'sass:math';
-@use 'sass:list';
 @use './variables' as vars;
+@use './functions' as fn;
 
 // ========================================
 // ПАРАМЕТРЫ ИСХОДНОГО МАКЕТА
 // ========================================
-
-$composition-width: 1240;
-$composition-height: 800;
-
-// ========================================
-// ФУНКЦИИ АДАПТИВНЫХ РАЗМЕРОВ
-// ========================================
-
-@function design($value) {
-  @return math.div($value, $composition-width) * 100cqw;
-}
-
-@function horizontal($value) {
-  @return math.div($value, $composition-width) * 100%;
-}
-
-@function vertical($value) {
-  @return math.div($value, $composition-height) * 100%;
-}
 
 // ========================================
 // ДЕСКТОПНАЯ ВЁРСТКА ТРЕТЬЕГО СЛАЙДА
@@ -45,7 +25,7 @@ $composition-height: 800;
 
     overflow: hidden;
 
-    border-radius: design(70);
+    border-radius: fn.design(70);
 
     background-color: vars.$color-card-bg;
   }
@@ -89,20 +69,20 @@ $composition-height: 800;
     position: absolute;
     z-index: 3;
 
-    left: horizontal(312);
-    top: vertical(53.07);
+    left: fn.horizontal(312);
+    top: fn.vertical(53.07);
 
-    width: horizontal(861);
+    width: fn.horizontal(861);
 
     margin: 0;
 
     color: #454545;
 
     font-family: vars.$font-secondary;
-    font-size: design(43);
+    font-size: fn.design(43);
     font-weight: 600;
 
-    line-height: design(55);
+    line-height: fn.design(55);
     letter-spacing: -0.01em;
 
     text-align: right;
@@ -121,20 +101,20 @@ $composition-height: 800;
     position: absolute;
     z-index: 3;
 
-    left: horizontal(730);
-    top: vertical(177);
+    left: fn.horizontal(730);
+    top: fn.vertical(177);
 
-    width: horizontal(443);
+    width: fn.horizontal(443);
 
     margin: 0;
 
     color: #737373;
 
     font-family: vars.$font-secondary;
-    font-size: design(33);
+    font-size: fn.design(33);
     font-weight: 600;
 
-    line-height: design(39);
+    line-height: fn.design(39);
     letter-spacing: -0.01em;
 
     text-align: right;
@@ -149,41 +129,20 @@ $composition-height: 800;
     position: absolute;
     z-index: 4;
 
-    left: horizontal(1014);
-    top: vertical(582);
+    left: fn.horizontal(1014);
+    top: fn.vertical(582);
 
     display: flex;
     align-items: center;
     justify-content: center;
 
-    width: design(180);
+    width: fn.design(180);
     aspect-ratio: 1;
 
     // Внутренний радиус звезды составляет
     // 88,2% от внешнего радиуса.
 
-    $star-points: ();
-
-    @for $index from 0 through 29 {
-      $angle: -90deg + $index * 12deg;
-
-      $radius: 50%;
-
-      @if $index % 2 == 1 {
-        $radius: 44.1%;
-      }
-
-      $x: 50% + $radius * math.cos($angle);
-      $y: 50% + $radius * math.sin($angle);
-
-      $star-points: list.append(
-        $star-points,
-        #{$x} #{$y},
-        comma
-      );
-    }
-
-    clip-path: polygon($star-points);
+    clip-path: fn.star-polygon();
 
     background-color: #4b4b4b;
   }
@@ -198,7 +157,7 @@ $composition-height: 800;
     color: vars.$color-white;
 
     font-family: vars.$font-secondary;
-    font-size: design(21.86);
+    font-size: fn.design(21.86);
     font-weight: 600;
 
     line-height: 1.13;

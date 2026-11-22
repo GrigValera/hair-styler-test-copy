@@ -1,0 +1,38 @@
+@use 'sass:math';
+@use 'sass:list';
+
+// Координаты десктопных композиций в исходном макете 1240 × 800.
+$composition-width: 1240;
+$composition-height: 800;
+
+@function design($value) {
+  @return math.div($value, $composition-width) * 100cqw;
+}
+
+@function horizontal($value) {
+  @return math.div($value, $composition-width) * 100%;
+}
+
+@function vertical($value) {
+  @return math.div($value, $composition-height) * 100%;
+}
+
+// Пятнадцатилучевая звезда с отношением радиусов 88,2%.
+@function star-polygon() {
+  $points: ();
+
+  @for $index from 0 through 29 {
+    $angle: -90deg + $index * 12deg;
+    $radius: 50%;
+
+    @if $index % 2 == 1 {
+      $radius: 44.1%;
+    }
+
+    $x: 50% + $radius * math.cos($angle);
+    $y: 50% + $radius * math.sin($angle);
+    $points: list.append($points, #{$x} #{$y}, comma);
+  }
+
+  @return polygon($points);
+}

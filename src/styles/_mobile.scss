@@ -1,6 +1,6 @@
 @use 'sass:math';
-@use 'sass:list';
 @use './variables' as vars;
+@use './functions' as fn;
 
 // ========================================
 // ПАРАМЕТРЫ МОБИЛЬНОГО МАКЕТА
@@ -38,39 +38,6 @@ $color-second-slide: #746d68;
     $value,
     $mobile-width
   ) * 100cqw;
-}
-
-// ========================================
-// ФОРМИРОВАНИЕ ДЕКОРАТИВНОЙ ЗВЕЗДЫ
-// ========================================
-
-// Создаём звезду из пятнадцати лучей.
-// Внутренний радиус составляет 88,2%
-// от внешнего радиуса.
-
-@function star-polygon() {
-  $points: ();
-
-  @for $index from 0 through 29 {
-    $angle: -90deg + $index * 12deg;
-
-    $radius: 50%;
-
-    @if $index % 2 == 1 {
-      $radius: 44.1%;
-    }
-
-    $x: 50% + $radius * math.cos($angle);
-    $y: 50% + $radius * math.sin($angle);
-
-    $points: list.append(
-      $points,
-      #{$x} #{$y},
-      comma
-    );
-  }
-
-  @return polygon($points);
 }
 
 // ========================================
@@ -870,7 +837,7 @@ $color-second-slide: #746d68;
 
     aspect-ratio: 1;
 
-    clip-path: star-polygon();
+    clip-path: fn.star-polygon();
 
     background-color: #4b4b4b;
   }
@@ -1107,7 +1074,7 @@ $color-second-slide: #746d68;
     width: mobile(180);
     aspect-ratio: 1;
 
-    clip-path: star-polygon();
+    clip-path: fn.star-polygon();
     background-color: #4b4b4b;
   }
 
