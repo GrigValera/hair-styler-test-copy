@@ -1,0 +1,454 @@
+@use '../variables' as vars;
+@use '../functions' as fn;
+@use './config' as *;
+
+
+@media (width < 768px) {  // ======================================
+  // ВТОРОЙ СЛАЙД
+  // ======================================
+
+  .slide--02 {
+    display: block;
+  }
+
+  // ======================================
+  // ОСНОВНАЯ КОМПОЗИЦИЯ ВТОРОГО СЛАЙДА
+  // ======================================
+
+  .slide-02__composition {
+    position: relative;
+
+    display: block;
+
+    width: 100%;
+
+    min-height: mobile(
+      $second-slide-height
+    );
+
+    box-sizing: border-box;
+
+    isolation: isolate;
+
+    overflow: hidden;
+
+    border-radius: 0;
+
+    // Однотонный фон из исходного макета.
+    // Вспомогующие линии Figma не являются
+    // частью дизайна и не воспроизводятся.
+
+    background-color:
+      $color-second-slide;
+  }
+
+  // ======================================
+  // ВЕРХНЯЯ ИНФОРМАЦИОННАЯ ПЛАШКА
+  // ======================================
+
+  .slide-02__mobile-feature,
+  .slide-03__mobile-feature {
+    position: absolute;
+    z-index: 5;
+
+    top: 0;
+    left: 0;
+
+    display: flex;
+    align-items: center;
+
+    width: 100%;
+    height: mobile(100);
+
+    padding: 0;
+
+    box-sizing: border-box;
+
+    border-radius: mobile(60);
+
+    background-color:
+      vars.$color-icon-active-bg;
+
+    color:
+      vars.$color-wheel-line;
+
+    // Тень информационных плашек из Figma.
+    box-shadow: mobile(15.633) mobile(13.165)
+      mobile(24.684) mobile(-4.937) rgb(65 60 57 / 21%);
+  }
+
+  // ======================================
+  // ОКРУЖНОСТЬ ИКОНКИ ПЕРА
+  // ======================================
+
+  .slide-02__mobile-feature-icon,
+  .slide-03__mobile-feature-icon {
+    position: absolute;
+
+    top: mobile(11);
+    left: mobile(14);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: mobile(76);
+
+    aspect-ratio: 1;
+
+    box-sizing: border-box;
+
+    border: mobile(2) solid #4b4b4b;
+
+    border-radius: 50%;
+
+    // Используем существующую SVG-иконку
+    // и цвет активного символа из Figma.
+
+    span {
+      display: block;
+
+      width: mobile(46.08);
+      height: mobile(42.87);
+
+      background-color:
+        vars.$color-icon-active;
+
+      mask:
+        url('/icons/feather.svg')
+        center / contain no-repeat;
+    }
+  }
+
+  // ======================================
+  // ТЕКСТ ИНФОРМАЦИОННОЙ ПЛАШКИ
+  // ======================================
+
+  .slide-02__mobile-feature-text,
+  .slide-03__mobile-feature-text {
+    position: absolute;
+
+    top: mobile(16);
+    left: mobile(105);
+
+    display: block;
+
+    width: mobile(195);
+
+    color:
+      vars.$color-wheel-line;
+
+    font-family:
+      vars.$font-secondary;
+
+    // Компенсируем визуальные отличия
+    // Montserrat от оригинального Euclid.
+
+    font-size: mobile(20);
+    font-weight: 600;
+
+    line-height: mobile(22.583);
+    letter-spacing: -0.01em;
+
+    text-align: left;
+
+    white-space: nowrap;
+  }
+
+  // ======================================
+  // ФОНОВОЕ СВЕЧЕНИЕ
+  // ======================================
+
+  // Десктопное свечение отсутствует
+  // в мобильном макете второго слайда.
+
+  .slide-02__glow {
+    display: none;
+  }
+
+  // ======================================
+  // ЗАГОЛОВОК ВТОРОГО СЛАЙДА
+  // ======================================
+
+  // Скрываем десктопный вариант заголовка,
+  // разбитый на две строки.
+
+  .slide-02__title {
+    display: none;
+  }
+
+  // Мобильный заголовок располагается
+  // в одну строку и не содержит дефис.
+
+  .slide-02__mobile-title {
+    position: absolute;
+    z-index: 4;
+
+    top: mobile(126.31);
+    left: mobile(20);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: mobile(280);
+    height: mobile(38);
+
+    margin: 0;
+
+    color:
+      vars.$color-white;
+
+    font-family:
+      vars.$font-secondary;
+
+    // Размер скорректирован с учётом
+    // ширины символов Montserrat.
+
+    font-size: mobile(35.5);
+    font-weight: 700;
+
+    line-height: 1.01;
+    letter-spacing: -0.01em;
+
+    text-align: center;
+
+    white-space: nowrap;
+  }
+
+  // ======================================
+  // ПЛАШКА «500 Г»
+  // ======================================
+
+  .slide-02__badge {
+    position: absolute;
+    z-index: 4;
+
+    top: mobile(184);
+    left: 50%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: mobile(92.18);
+    height: mobile(40.55);
+
+    padding: 0;
+
+    box-sizing: border-box;
+
+    border-radius: mobile(43.64);
+
+    background-color:
+      vars.$color-white;
+
+    color: #4b4b4b;
+
+    font-family:
+      vars.$font-secondary;
+
+    font-size: mobile(20.17);
+    font-weight: 600;
+
+    line-height: 1.268;
+    letter-spacing: -0.01em;
+
+    white-space: nowrap;
+
+    transform: translateX(-50%);
+  }
+
+  // ======================================
+  // ИЗОБРАЖЕНИЕ МОБИЛЬНОЙ МОДЕЛИ
+  // ======================================
+
+  .slide-02__model {
+    position: absolute;
+    z-index: 2;
+
+    // Исходный PNG имеет размер 764 × 1574.
+    //
+    // Незначительно уменьшаем изображение
+    // относительно предыдущей реализации.
+    //
+    // Компенсируем прозрачное поле сверху
+    // и сохраняем центральное положение.
+
+    left: mobile(-29);
+    top: mobile(150);
+
+    display: block;
+
+    width: mobile(378);
+
+    pointer-events: none;
+
+    img {
+      display: block;
+
+      width: 100%;
+      height: auto;
+
+      max-width: none;
+
+      object-fit: contain;
+    }
+  }
+
+  // ======================================
+  // ПЛАВНЫЙ ПЕРЕХОД ИЗОБРАЖЕНИЯ В ФОН
+  // ======================================
+
+  // Исходный градиент расположен на Y = 225
+  // и имеет высоту 684 пикселя.
+  //
+  // Точки градиента из Figma:
+  // 63,012% — непрозрачность цвета 0%;
+  // 71,491% — непрозрачность цвета 37,5%;
+  // 82,928% — непрозрачность цвета 75%;
+  // 90,042% — непрозрачность цвета 90,6%;
+  // 100% — непрозрачность цвета 100%.
+  //
+  // Переводим позиции градиента
+  // в адаптивные единицы контейнера.
+  //
+  // После последней точки цвет остаётся
+  // непрозрачным до самого конца слайда.
+
+  .slide-02__composition::after {
+    content: '';
+
+    position: absolute;
+    z-index: 3;
+
+    top: mobile(225);
+    right: 0;
+    bottom: 0;
+    left: 0;
+
+    background-image:
+      linear-gradient(
+        180deg,
+
+        rgb(116 109 104 / 0%)
+          0,
+
+        rgb(116 109 104 / 0%)
+          mobile(684 * 0.63012),
+
+        rgb(116 109 104 / 37.5%)
+          mobile(684 * 0.71491),
+
+        rgb(116 109 104 / 75%)
+          mobile(684 * 0.82928),
+
+        rgb(116 109 104 / 90.6%)
+          mobile(684 * 0.90042),
+
+        $color-second-slide
+          mobile(684),
+
+        $color-second-slide
+          100%
+      );
+
+    background-repeat: no-repeat;
+
+    pointer-events: none;
+  }
+
+  // ======================================
+  // ДЕКОРАТИВНАЯ ЗВЕЗДА
+  // ======================================
+
+  .slide-02__star {
+    position: absolute;
+    z-index: 4;
+
+    top: mobile(204);
+    left: mobile(201);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: mobile(99.46);
+
+    aspect-ratio: 1;
+
+    clip-path: fn.star-polygon();
+
+    background-color: #4b4b4b;
+  }
+
+  // ======================================
+  // ТЕКСТ ДЕКОРАТИВНОЙ ЗВЕЗДЫ
+  // ======================================
+
+  .slide-02__star-text {
+    display: block;
+
+    color:
+      vars.$color-white;
+
+    font-family:
+      vars.$font-secondary;
+
+    font-size: mobile(12.08);
+    font-weight: 600;
+
+    line-height: 1.13;
+    letter-spacing: -0.01em;
+
+    text-align: center;
+
+    white-space: nowrap;
+
+    transform: rotate(-10.99deg);
+  }
+
+  // ======================================
+  // ОПИСАНИЕ ВТОРОГО СЛАЙДА
+  // ======================================
+
+  .slide-02__description--desktop {
+    display: none;
+  }
+
+  .slide-02__description--mobile {
+    display: block;
+  }
+
+  .slide-02__description {
+    position: absolute;
+    z-index: 4;
+
+    top: mobile(765);
+    left: 50%;
+
+    // Ширина текстовой области соответствует Figma.
+
+    width: mobile(280);
+
+    margin: 0;
+
+    color:
+      vars.$color-white;
+
+    font-family:
+      vars.$font-secondary;
+
+    font-size: mobile(15);
+    font-weight: 500;
+
+    line-height: 1.675;
+    letter-spacing: 0.02em;
+
+    text-align: center;
+
+    transform: translateX(-50%);
+
+  }
+
+}

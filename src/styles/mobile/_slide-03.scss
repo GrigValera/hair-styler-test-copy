@@ -1,0 +1,194 @@
+@use '../variables' as vars;
+@use '../functions' as fn;
+@use './config' as *;
+
+
+@media (width < 768px) {  // ======================================
+  // ТРЕТИЙ СЛАЙД
+  // ======================================
+
+  .slide--03 {
+    display: block;
+  }
+
+  .slide-03__composition {
+    position: relative;
+
+    display: block;
+    width: 100%;
+    min-height: mobile($third-slide-height);
+
+    box-sizing: border-box;
+    isolation: isolate;
+    overflow: hidden;
+
+    background-color: $color-second-slide;
+  }
+
+  // Иконка двигателя в общей информационной плашке.
+  .slide-03__mobile-feature-icon {
+    top: mobile(12);
+
+    span {
+      width: mobile(56.25);
+      height: mobile(56.25);
+
+      background-color: vars.$color-wheel-line;
+      mask: url('/icons/motor.svg') center / contain no-repeat;
+    }
+  }
+
+  .slide-03__mobile-feature-text {
+    top: mobile(25);
+    left: mobile(108);
+
+    width: mobile(192);
+
+    font-size: mobile(17);
+    line-height: mobile(23.891);
+  }
+
+  // Десктопный заголовок заменяется мобильным.
+  .slide-03__title {
+    display: none;
+  }
+
+  .slide-03__mobile-title {
+    position: absolute;
+    z-index: 3;
+
+    top: mobile(133);
+    left: mobile(20);
+
+    display: block;
+    width: mobile(280);
+    margin: 0;
+
+    color: vars.$color-white;
+    font-family: vars.$font-secondary;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    text-align: left;
+
+    span {
+      position: absolute;
+      left: 0;
+      display: block;
+      width: 100%;
+      white-space: nowrap;
+    }
+  }
+
+  .slide-03__mobile-title-top {
+    top: 0;
+
+    // Montserrat немного шире оригинального Euclid.
+    font-size: mobile(30);
+    line-height: mobile(41);
+  }
+
+  .slide-03__mobile-title-main {
+    top: mobile(45.93);
+
+    font-size: mobile(40);
+    line-height: mobile(48);
+  }
+
+  .slide-03__mobile-title-bottom {
+    top: mobile(151.56);
+
+    font-size: mobile(21);
+    line-height: mobile(28);
+  }
+
+  // Иллюстрация двигателя уже содержит фоновое свечение.
+  .slide-03__technology {
+    position: absolute;
+    z-index: 1;
+
+    top: mobile(347);
+    left: 0;
+
+    display: block;
+    width: 100%;
+    height: mobile(407);
+
+    overflow: hidden;
+    border-radius: mobile(28);
+    background-color: vars.$color-card-bg;
+
+    img {
+      display: block;
+      width: 100%;
+      height: 100%;
+
+      max-width: none;
+      object-fit: cover;
+      object-position: center;
+    }
+  }
+
+  .slide-03__subtitle {
+    position: absolute;
+    z-index: 3;
+
+    top: mobile(365);
+    left: mobile(20);
+
+    width: mobile(204);
+    margin: 0;
+
+    color: $color-text-dark;
+    font-family: vars.$font-secondary;
+    font-size: mobile(21);
+    font-weight: 600;
+    line-height: mobile(25);
+    letter-spacing: -0.01em;
+    text-align: left;
+
+    .slide-03__mobile-break {
+      display: inline;
+    }
+  }
+
+  // Звезда частично перекрывает иллюстрацию двигателя.
+  .slide-03__star {
+    position: absolute;
+    z-index: 4;
+
+    top: mobile(697);
+    left: mobile(68);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: mobile(180);
+    aspect-ratio: 1;
+
+    clip-path: fn.star-polygon();
+    background-color: #4b4b4b;
+  }
+
+  .slide-03__star-text {
+    color: vars.$color-white;
+    font-family: vars.$font-secondary;
+    font-size: mobile(21);
+    font-weight: 700;
+    line-height: 1.13;
+    letter-spacing: -0.01em;
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  // ======================================
+  // ОТКЛЮЧЕНИЕ ДЕСКТОПНОГО КОЛЕСА
+  // ======================================
+
+  // На мобильных устройствах отсутствует
+  // вращающаяся боковая навигация.
+
+  .wheel-layout {
+    display: none;
+  }
+}

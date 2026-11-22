@@ -1,0 +1,85 @@
+@use '../variables' as vars;
+@use '../functions' as fn;
+@use './config' as *;
+
+// ========================================
+// МОБИЛЬНЫЕ ЭЛЕМЕНТЫ
+// ========================================
+
+// По умолчанию скрываем элементы,
+// предназначенные только для мобильной
+// версии презентации.
+
+.slide-02__mobile-feature,
+.slide-02__mobile-title,
+.slide-03__mobile-feature,
+.slide-03__mobile-title,
+.slide-03__mobile-break {
+  display: none;
+}
+
+// ========================================
+// МОБИЛЬНАЯ ВЁРСТКА
+// ========================================
+
+@media (width < 768px) {
+
+  // ======================================
+  // ОБЩАЯ СТРУКТУРА ПРЕЗЕНТАЦИИ
+  // ======================================
+
+  .presentation {
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
+
+    width: 100%;
+    height: auto;
+
+    min-height: 100vh;
+
+    gap: 0;
+
+    overflow: hidden;
+
+    container-type: inline-size;
+  }
+
+  // Слайды располагаются друг под другом
+  // в обычном потоке документа.
+
+  .slide {
+    position: relative;
+
+    flex: 0 0 auto;
+
+    width: 100%;
+    height: auto;
+  }
+
+  .slide__content {
+    position: relative;
+
+    display: block;
+
+    width: 100%;
+    height: auto;
+  }
+
+  // Общая сцена мобильной композиции.
+
+  .slide-01__stage {
+    position: relative;
+
+    width: 100%;
+    height: auto;
+
+    aspect-ratio: auto;
+
+    container-type: inline-size;
+
+    overflow: hidden;
+  }
+
+}

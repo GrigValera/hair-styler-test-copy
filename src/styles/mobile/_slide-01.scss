@@ -1,0 +1,350 @@
+@use 'sass:math';
+@use '../variables' as vars;
+@use '../functions' as fn;
+@use './config' as *;
+
+
+@media (width < 768px) {  // ======================================
+  // ПЕРВЫЙ СЛАЙД
+  // ======================================
+
+  .slide--01 {
+    display: block;
+  }
+
+  // ======================================
+  // ОСНОВНАЯ КОМПОЗИЦИЯ ПЕРВОГО СЛАЙДА
+  // ======================================
+
+  .slide-01__composition {
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
+
+    width: 100%;
+
+    min-height: mobile(
+      $first-slide-height
+    );
+
+    padding-top: mobile(384);
+    padding-bottom: mobile(26);
+
+    box-sizing: border-box;
+
+    isolation: isolate;
+
+    overflow: hidden;
+
+    // Мобильный слайд не имеет
+    // внешнего скругления.
+
+    border-radius: 0;
+
+    background-color:
+      vars.$color-slide-bg;
+
+    background-image:
+      linear-gradient(
+        180deg,
+        #c4bcb5 0%,
+        #b6aaa0 35%,
+        #918985 65%,
+        #7f7875 100%
+      );
+  }
+
+  // ======================================
+  // ОСНОВНАЯ МОБИЛЬНАЯ ИЛЛЮСТРАЦИЯ
+  // ======================================
+
+  .slide-01__main-image {
+    position: absolute;
+    z-index: 1;
+
+    // Положение фонового графического
+    // слоя из мобильного макета.
+
+    left: mobile(-6);
+    top: 0;
+
+    display: block;
+
+    width: mobile(333);
+
+    pointer-events: none;
+
+    img {
+      display: block;
+
+      width: 100%;
+      height: auto;
+
+      max-width: none;
+
+      object-fit: contain;
+    }
+  }
+
+  // ======================================
+  // ЗАГОЛОВОК ПЕРВОГО СЛАЙДА
+  // ======================================
+
+  .slide-01__header {
+    position: absolute;
+    z-index: 3;
+
+    top: mobile(21);
+    left: mobile(20);
+
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+
+    width: mobile(280);
+
+    text-align: center;
+  }
+
+  .slide-01__title {
+    width: 100%;
+
+    margin: 0;
+
+    color: $color-text-dark;
+
+    // Используем Montserrat вместо
+    // отсутствующего оригинального Euclid.
+
+    font-family:
+      vars.$font-secondary;
+
+    font-size: mobile(23);
+    font-weight: 600;
+
+    line-height: 1.08;
+    letter-spacing: -0.01em;
+
+    text-align: center;
+
+    span {
+      display: block;
+
+      // Montserrat занимает больше места, чем Euclid.
+      // Сохраняем одну строку без наложения на плашку.
+      font-size: mobile(21);
+      white-space: nowrap;
+    }
+  }
+
+  // ======================================
+  // ПЛАШКА «2 В 1»
+  // ======================================
+
+  .slide-01__badge {
+    position: absolute;
+
+    // Положение относительно заголовка:
+    // 88 - 21 = 67 пикселей.
+
+    top: mobile(67);
+    left: 50%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: mobile(102.87);
+    height: mobile(46.62);
+
+    padding: 0;
+
+    box-sizing: border-box;
+
+    border-radius: mobile(31.56);
+
+    background-color:
+      vars.$color-white;
+
+    color: $color-text-dark;
+
+    font-family:
+      vars.$font-secondary;
+
+    font-size: mobile(32);
+    font-weight: 700;
+
+    line-height: 1;
+    letter-spacing: -0.01em;
+
+    white-space: nowrap;
+
+    transform: translateX(-50%);
+
+    box-shadow:
+      0 mobile(4) mobile(10)
+      rgb(0 0 0 / 12%);
+  }
+
+  // ======================================
+  // КОНТЕЙНЕР БОКОВЫХ КАРТОЧЕК
+  // ======================================
+
+  .slide-01__cards {
+    position: relative;
+    z-index: 2;
+
+    display: grid;
+
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+
+    gap: mobile($card-gap);
+
+    width: 100%;
+  }
+
+  // ======================================
+  // ОБЩИЕ СТИЛИ КАРТОЧЕК
+  // ======================================
+
+  .slide-01__card {
+    position: relative;
+
+    display: block;
+
+    width: 100%;
+
+    // Высота карточки автоматически
+    // определяется её текущей шириной.
+
+    aspect-ratio:
+      math.div(
+        $card-width,
+        $card-height
+      );
+
+    min-width: 0;
+
+    margin: 0;
+    padding: 0;
+
+    box-sizing: border-box;
+
+    border-radius:
+      mobile($card-radius);
+
+    overflow: hidden;
+
+    background-color: #62696b;
+
+    // Дополнительный размер компенсирует
+    // прозрачные поля десктопных экспортов.
+
+    img {
+      position: absolute;
+      z-index: 0;
+
+      top: -2%;
+      left: -10.5%;
+
+      display: block;
+
+      width: 121%;
+      height: 110%;
+
+      max-width: none;
+
+      object-fit: cover;
+      object-position: center;
+
+      border-radius: 0;
+
+      box-shadow: none;
+    }
+  }
+
+  // ======================================
+  // ЛЕВАЯ КАРТОЧКА «ФЕН»
+  // ======================================
+
+  .slide-01__card:first-child {
+
+    img {
+      object-position: center;
+    }
+
+    .slide-01__card-label {
+      width: mobile(70.67);
+
+      background-color:
+        $color-text-dark;
+
+      color:
+        vars.$color-white;
+    }
+  }
+
+  // ======================================
+  // ПРАВАЯ КАРТОЧКА «СТАЙЛЕР»
+  // ======================================
+
+  .slide-01__card:last-child {
+
+    img {
+      object-position: center;
+    }
+
+    .slide-01__card-label {
+      width: mobile(107.67);
+
+      background-color:
+        vars.$color-white;
+
+      color:
+        $color-text-dark;
+    }
+  }
+
+  // ======================================
+  // ПОДПИСИ ВНУТРИ КАРТОЧЕК
+  // ======================================
+
+  .slide-01__card-label {
+    position: absolute;
+    z-index: 2;
+
+    top: mobile(19);
+    left: 50%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    height: mobile(34.97);
+
+    padding: 0;
+
+    box-sizing: border-box;
+
+    border-radius: mobile(20.89);
+
+    font-family:
+      vars.$font-secondary;
+
+    font-size: mobile(17.25);
+    font-weight: 600;
+
+    line-height: 1.268;
+    letter-spacing: -0.01em;
+
+    text-align: center;
+
+    white-space: nowrap;
+
+    transform: translateX(-50%);
+  }
+
+}
