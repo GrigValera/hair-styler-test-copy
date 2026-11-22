@@ -28,3 +28,6 @@ public/fonts/EuclidCircularATRIAL-*.woff2
 
 # Результаты автоматических браузерных проверок
 test-results/
+
+# Эталоны Figma для локальной попиксельной сверки
+tests/figma-reference/
