@@ -139,9 +139,9 @@ try {
 
     assert.ok(data.images.every((img) => img.loaded), 'Не загружены изображения');
     for (const src of [
-      '/images/slide-01/slide-01-background-mobile.png',
-      '/images/slide-02/slide-02-model-mobile.png',
-      '/images/slide-03/slide-03-technology-mobile.png'
+      '/images/slide-01/slide-01-background-mobile.webp',
+      '/images/slide-02/slide-02-model-mobile.webp',
+      '/images/slide-03/slide-03-technology-mobile.webp'
     ]) {
       assert.ok(data.images.some((img) => img.src === src), 'Не выбран мобильный ресурс: ' + src);
     }
