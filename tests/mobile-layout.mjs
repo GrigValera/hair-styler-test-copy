@@ -111,6 +111,8 @@ try {
   for (const width of widths) {
     await page.setViewportSize({ width, height: 900 });
     await page.goto(url, { waitUntil: 'networkidle' });
+    await page.evaluate(() => window.scrollTo(0, 0));
+    await page.waitForFunction(() => window.scrollY === 0);
     const data = await inspectMobile(page);
     const scale = width / 320;
 

@@ -25,3 +25,6 @@ dist-ssr
 
 # Licensed trial font files (local use only)
 public/fonts/EuclidCircularATRIAL-*.woff2
+
+# Результаты автоматических браузерных проверок
+test-results/
