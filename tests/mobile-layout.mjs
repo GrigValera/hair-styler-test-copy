@@ -83,7 +83,7 @@ async function inspectMobile(page) {
         loaded: img.complete && img.naturalWidth > 0
       })),
       firstTitle: lines('.slide-01__title'),
-      description: lines('.slide-02__description'),
+      description: lines('.slide-02__description--mobile'),
       title: lines('.slide-03__mobile-title'),
       feature: lines('.slide-03__mobile-feature-text'),
       subtitle: lines('.slide-03__subtitle'),
