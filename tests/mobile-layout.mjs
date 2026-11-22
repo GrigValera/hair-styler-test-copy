@@ -82,6 +82,7 @@ async function inspectMobile(page) {
         src: new URL(img.currentSrc).pathname,
         loaded: img.complete && img.naturalWidth > 0
       })),
+      firstTitle: lines('.slide-01__title'),
       description: lines('.slide-02__description'),
       title: lines('.slide-03__mobile-title'),
       feature: lines('.slide-03__mobile-feature-text'),
@@ -145,6 +146,10 @@ try {
       assert.ok(data.images.some((img) => img.src === src), 'Не выбран мобильный ресурс: ' + src);
     }
 
+    assert.deepEqual(data.firstTitle.map((line) => line.text), [
+      'ФЕН И СТАЙЛЕР',
+      'в уникальном дизайне'
+    ]);
     assert.deepEqual(data.description.map((line) => line.text), [
       'Уменьшает усталость рук',
       'при сушке волос, делая',
@@ -166,7 +171,7 @@ try {
       'Бесщеточный',
       'мотор BLDC'
     ]);
-    for (const line of [...data.description, ...data.title, ...data.feature, ...data.subtitle]) {
+    for (const line of [...data.firstTitle, ...data.description, ...data.title, ...data.feature, ...data.subtitle]) {
       assert.ok(line.left >= -1 && line.right <= width + 1,
         'Текст выходит за границы: ' + line.text + ' (' + width + ')');
     }

@@ -282,7 +282,10 @@ $color-second-slide: #746d68;
     span {
       display: block;
 
-      font-size: inherit;
+      // Montserrat занимает больше места, чем Euclid.
+      // Сохраняем одну строку без наложения на плашку.
+      font-size: mobile(21);
+      white-space: nowrap;
     }
   }
 
