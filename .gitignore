@@ -23,8 +23,10 @@ dist-ssr
 *.sln
 *.sw?
 
-# Licensed trial font files (local use only)
-public/fonts/EuclidCircularATRIAL-*.woff2
+# Коммерческие файлы шрифта остаются только на локальном компьютере.
+public/fonts/[Ee]uclid*
+public/fonts/[Ee][Uu]CLID*
+public/fonts/[Ee][Uu]clid*
 
 # Результаты автоматических браузерных проверок
 test-results/
